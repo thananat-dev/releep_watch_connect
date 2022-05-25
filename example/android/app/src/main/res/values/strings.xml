@@ -1,0 +1,235 @@
+<resources>
+    <string name="app_name">releep_watch_connect_example</string>
+
+    <string name="rtk_dfu_file_size">%d 字节</string>
+    <string name="rtk_dfu_detail_file_info_sub_file_type">类型：</string>
+    <string name="rtk_dfu_detail_file_info_sub_file_version">版本：</string>
+    <string name="rtk_dfu_detail_file_info_sub_file_size">大小：</string>
+    <string name="rtk_dfu_image_section_size">分区大小:</string>
+
+    <string name="header_title_dfu_file_info">文件详情</string>
+
+    <string name="rtk_dfu_text_file_path">文件路径</string>
+    <string name="rtk_dfu_text_file_name">文件名称</string>
+    <string name="rtk_dfu_text_file_type">文件类型</string>
+    <string name="rtk_dfu_text_file_size">文件大小</string>
+    <string name="rtk_dfu_text_target_device">设备</string>
+    <string name="rtk_dfu_text_file_upload_content">升级内容</string>
+    <string name="rtk_dfu_text_file_image_size">Image 大小</string>
+    <string name="rtk_dfu_text_file_image_version">Image 版本</string>
+    <string name="rtk_dfu_text_file_status">状态</string>
+    <string name="rtk_dfu_text_file_ic_type">芯片</string>
+
+    <string name="rtk_dfu_title_device_info">设备信息</string>
+    <string name="rtk_dfu_title_file_content">文件内容</string>
+    <string name="rtk_dfu_title_work_mode">工作模式</string>
+
+    <string name="rtk_dfu_text_target_name">设备名称</string>
+    <string name="rtk_dfu_text_target_bd_address">蓝牙地址</string>
+    <string name="rtk_dfu_text_battery_level">电量</string>
+    <string name="rtk_dfu_text_target_device_mac">MAC</string>
+    <string name="rtk_dfu_text_target_link_key">Link Key</string>
+    <string name="rtk_dfu_text_target_old_fw_version">对端APP版本</string>
+    <string name="rtk_dfu_text_target_old_patch_version">对端Patch版本</string>
+    <string name="rtk_dfu_text_target_patch_extend_version">对端Extend Patch版本</string>
+    <string name="rtk_dfu_text_target_ic_type">IC 类型</string>
+    <string name="rtk_dfu_text_target_protocol_type">Protocol 类型</string>
+    <string name="rtk_dfu_text_target_update_mechanism">升级机制</string>
+    <string name="rtk_dfu_text_target_bank">当前要升级的Bank区</string>
+    <string name="rtk_dfu_text_target_pactch_bank">当前要升级的Patch Bank区</string>
+    <string name="rtk_dfu_text_target_Aes_Mode">AES加密</string>
+    <string name="rtk_dfu_text_target_buffer_check_mode">Buffer Check</string>
+    <string name="rtk_dfu_text_target_max_buffer_size">最大 Buffer Check 值</string>
+    <string name="rtk_dfu_text_target_appData0_version">当前App Data0 版本</string>
+    <string name="rtk_dfu_text_target_appData1_version">当前App Data1 版本</string>
+    <string name="rtk_dfu_text_target_appData2_version">当前App Data2 版本</string>
+    <string name="rtk_dfu_text_target_appData3_version">当前App Data3 版本</string>
+    <string name="rtk_dfu_file_status_ok">OK</string>
+    <string name="rtk_dfu_file_status_no_file">文件未加载</string>
+    <string name="rtk_dfu_file_version_text_detail">文件详情</string>
+
+    <string name="rtk_dfu_work_mode_normal">普通升级</string>
+    <string name="rtk_dfu_work_mode_extension">外部Flash升级</string>
+    <string name="rtk_dfu_work_mode_slient">静默升级</string>
+    <string name="rtk_dfu_work_mode_silent_no_temp">No Temp</string>
+    <string name="rtk_dfu_work_mode_unknown">未知</string>
+
+    <string name="rtk_dfu_file_type_single">单文件</string>
+    <string name="rtk_dfu_file_type_pack">压缩包</string>
+    <string name="rtk_dfu_file_content_type_full">全部</string>
+    <string name="rtk_dfu_file_type_merge_patch">Merge Patch</string>
+    <string name="rtk_dfu_file_type_merge_app">Merge App</string>
+    <string name="rtk_dfu_file_type_merge_user_data">Merge User data</string>
+    <string name="rtk_dfu_file_type_merge_patch_extension">Merge Patch Extension</string>
+    <string name="rtk_dfu_file_type_merge_config_file">Merge Config file</string>
+    <string name="rtk_dfu_file_type_merge_external_flash_image">Merge External Flash image</string>
+    <string name="rtk_dfu_file_type_unknown">未知</string>
+
+    <string name="rtk_dfu_unknown_device">未知设备</string>
+    <string name="rtk_dfu_scanner_title">选择一个你想要升级的设备：</string>
+    <string name="rtk_dfu_scanner_empty">未搜索到设备</string>
+    <string name="rtk_dfu_scanner_action_scan">搜索</string>
+    <string name="rtk_dfu_scanner_action_cancel">取消</string>
+    <string name="rtk_dfu_scanner_subtitle_bonded">已配对设备：</string>
+    <string name="rtk_dfu_scanner_subtitle_not_bonded">可用设备：</string>
+
+
+    <string name="rtk_dfu_progress_state_origin">准备升级</string>
+
+    <string name="rtk_dfu_state_known">未知</string>
+    <string name="rtk_dfu_state_origin">初始化</string>
+    <string name="rtk_dfu_state_initialize">初始化 &#8230;</string>
+    <string name="rtk_dfu_state_start">启动中 &#8230;</string>
+    <string name="rtk_dfu_state_remote_enter_ota">进入升级模式&#8230;</string>
+    <string name="rtk_dfu_state_find_ota_remote">搜索设备&#8230;</string>
+    <string name="rtk_dfu_state_connect_ota_remote">连接设备&#8230;</string>
+    <string name="rtk_dfu_state_prepare_dfu_processing">准备升级环境 &#8230;</string>
+    <string name="rtk_dfu_state_start_ota_processing">正在升级&#8230;</string>
+    <string name="rtk_dfu_state_hand_over_processing">正在HandOver&#8230;</string>
+    <string name="rtk_dfu_state_ota_send_file">正在发送文件 %1$d/%2$d &#8230;</string>
+    <string name="rtk_dfu_state_upgrade_success">升级成功</string>
+    <string name="rtk_dfu_state_pending_active_image">等待激活固件 &#8230;</string>
+    <string name="rtk_dfu_state_start_active_image">固件激活中 &#8230;</string>
+    <string name="rtk_dfu_state_image_active_success">固件激活成功</string>
+    <string name="rtk_dfu_state_abort_processing">等待取消…</string>
+    <string name="rtk_dfu_state_error_processing">处理错误…</string>
+    <string name="rtk_dfu_state_aborted">已取消</string>
+    <string name="rtk_dfu_state_scan_secondary_bud">正在搜索副耳设备 …</string>
+
+    <string name="rtk_dfu_toast_error_message">错误码：%1$s\n概述：%2$s\n详情：%3$s</string>
+    <string name="rtk_dfu_toast_connection_error_message">初始化连接对端设备异常,\n%s</string>
+    <string name="rtk_dfu_toast_ota_is_processing">正在进行固件升级</string>
+    <string name="rtk_dfu_toast_ota_is_processing_exist">正在进行固件升级，确定要退出吗</string>
+    <string name="rtk_dfu_toast_no_ble">设备不支持BLE</string>
+    <string name="rtk_dfu_toast_bt_enabled">蓝牙已打开</string>
+    <string name="rtk_dfu_toast_bt_not_enabled">蓝牙未打开</string>
+    <string name="rtk_dfu_toast_connect_device">正在与设备：%1$s建立连接，请稍等片刻…</string>
+    <string name="rtk_dfu_toast_operation_failed">操作失败</string>
+    <string name="rtk_dfu_toast_no_device">设备未连接</string>
+
+    <string name="rtk_dfu_fc_undefined">未定义</string>
+    <string name="rtk_dfu_fc_pack_loss">没有找到可升级的文件</string>
+    <string name="rtk_dfu_fc_pack_loss_empty">打包文件不能为空</string>
+    <string name="rtk_dfu_fc_pack_duplicate_bank">选择文件的bank和当前设备bank区相同</string>
+    <string name="rtk_dfu_fc_pack_loss_ota_header">打包文件没有 OTA Header</string>
+    <string name="rtk_dfu_fc_pack_loss_rom_patch">打包文件没有 Rom Patch</string>
+    <string name="rtk_dfu_fc_pack_loss_app_image">打包文件没有 App Image</string>
+    <string name="rtk_dfu_fc_pack_loss_low_version">固件版本较低，没有可升级文件</string>
+    <string name="rtk_dfu_fc_pack_nt">不支持打包文件</string>
+    <string name="rtk_dfu_fc_pack_nt_ota_header">不支持含有 OTA Header 的打包文件</string>
+    <string name="rtk_dfu_fc_pack_nt_bank_switch">选择的文件不支持bank切换</string>
+    <string name="rtk_dfu_fc_single_nt">选择的文件不是打包文件</string>
+
+
+    <string name="rtk_dfu_update_mechanism_one_by_one">One By One</string>
+    <string name="rtk_dfu_update_mechanism_all_in_one">All In One</string>
+    <string name="rtk_dfu_update_mechanism_all_in_one_with_buffer">All In One With Buffer</string>
+
+
+    <string name="rtk_dfu_connection_state_no_device">无设备</string>
+    <string name="rtk_dfu_connection_state_connecting">正在连接…</string>
+    <string name="rtk_dfu_connection_state_disconnected">已断开</string>
+    <string name="rtk_dfu_connection_state_connected">已连接</string>
+    <string name="rtk_dfu_connection_state_discovering_services">查询服务…</string>
+    <string name="rtk_dfu_connection_state_request_mtu">请求 MTU …</string>
+    <string name="rtk_dfu_connection_state_set_perfered_phy">配置 PHY …</string>
+    <string name="rtk_dfu_connection_state_enable_cccd">使能 CCCD …</string>
+    <string name="rtk_dfu_connection_state_not_supported">不支持 </string>
+    <string name="rtk_dfu_connection_state_disconnecting">正在断开…</string>
+
+    <string name="rtk_dfu_no_available_upload_file">没有可升级的文件</string>
+
+    <string name="rtk_dfu_action_reset">重置</string>
+    <string name="rtk_dfu_action_disconnect">断开</string>
+    <string name="rtk_dfu_action_submit">提交</string>
+
+    <string name="rtk_ota_state_known">Unknown</string>
+    <string name="rtk_ota_state_oritin">origin</string>
+    <string name="rtk_ota_state_bind_service">bind service ...</string>
+    <string name="rtk_ota_state_init_ok">initialized</string>
+    <string name="rtk_ota_state_preparing">preparing ...</string>
+    <string name="rtk_ota_state_connecting">connecting ...</string>
+    <string name="rtk_ota_state_process_pair_request">pair request ...</string>
+    <string name="rtk_ota_state_pending_discover_service">pending discover service ...</string>
+    <string name="rtk_ota_state_discover_service">discover service ...</string>
+    <string name="rtk_ota_state_read_device_info">read device info ...</string>
+    <string name="rtk_ota_state_read_protocol_type">read protocol info ...</string>
+    <string name="rtk_ota_state_read_image_info">read image info ...</string>
+    <string name="rtk_ota_state_read_battery_info">read battery info ...</string>
+    <string name="rtk_ota_state_prepared">connected.</string>
+    <string name="rtk_ota_state_ota_processing">ota processing ...</string>
+    <string name="pref_title_dfu_file_suffix">文件后缀</string>
+    <string name="pref_category_title_normal_mode">普通升级</string>
+    <string name="pref_title_dfu_handover_timeout">Handover 超时(秒）</string>
+    <string name="pref_title_dfu_wait_disconnect_when_enter_ota_mode">进入OTA模式后等待连接断开</string>
+    <string name="rtk_dfu_bin_indicator_00">image不存在</string>
+    <string name="rtk_dfu_bin_indicator_01">image在bank0,应该升级bank1</string>
+    <string name="rtk_dfu_bin_indicator_10">image在bank1,应该升级bank0</string>
+    <string name="rtk_dfu_bin_indicator_undefined">未定义</string>
+    <string name="rtk_dfu_bin_indicator_11">image is standalone, ota should update for standalone</string>
+
+    <string name="home_ecg_measure_btn">心电测量</string>
+    <string name="include_bottom_tv_fourthly_button">历史记录</string>
+
+    <string name="ai_go">AI诊断</string>
+    <string name="record">记录</string>
+    <string name="sync">同步</string>
+    <!--弹出进度条-->
+    <string name="prompt">提示</string>
+    <string name="ecg_sync_data">正在同步,请稍候&#8230;</string>
+    <string name="ecg_sync_data_failed">同步失败</string>
+    <string name="ecg_sync_data_success">同步成功</string>
+
+    <string name="ecg_header_title">增益:10mm/mv  走速:25mm/s  Ⅰ导联</string>
+    <string name="login_user_name">用户名</string>
+    <string name="function_heart">心率</string>
+    <string name="function_bp">血压</string>
+    <string name="age_text">年龄</string>
+    <string name="sex_text">性别</string>
+    <string name="man_text">男</string>
+    <string name="woman_text">女</string>
+
+    <!--心电测量页 标题-->
+    <string name="ecg_measure_title">心电测量</string>
+    <!--心电测量页 bpm数据-->
+    <string name="ecg_measure_bpm_text">--</string>
+    <!--心电测量页 bpm单位-->
+    <string name="ecg_measure_bpm_unit">bpm</string>
+    <!--心电测量页 mmHg数据-->
+    <string name="ecg_measure_mmhg_text">--/--</string>
+    <!--心电测量页 mmHg单位-->
+    <string name="ecg_measure_mmhg_unit">mmHg</string>
+    <!--心电测量页 HRV数据-->
+    <string name="ecg_measure_hrv_text">--</string>
+    <!--心电测量页 HRV单位-->
+    <string name="ecg_measure_hrv_unit">HRV</string>
+    <!--心电测量页 电极接触良好-->
+    <string name="ecg_measure_electric_on">电极接触良好</string>
+    <!--心电测量页 电极脱落-->
+    <string name="ecg_measure_electric_off">电极脱落</string>
+    <!--心电测量页 开始-->
+    <string name="ecg_measure_start">开始</string>
+    <!--心电测量页 完成-->
+    <string name="ecg_measure_finish">完成</string>
+    <!--心电测量页 进度条进度-->
+    <string name="ecg_measure_progress_text">0%</string>
+
+    <!--心电测量页 Dialog  dialog_ecg_measur.xml -->
+    <!--心电测量页 提示-->
+    <string name="ecg_measure_dialog_hint_text">佩戴提示</string>
+    <!--心电测量页 提示语-->
+    <string name="ecg_measure_dialog_marked_words_text">请戴紧手环,使背面金属片紧贴皮肤,并使手指接触到手环上金属片</string>
+    <!--心电测量页 确认-->
+    <string name="ecg_measure_dialog_confirm_text">确认</string>
+
+    <!--心电测量页 Dialog-->
+    <string name="ecg_measure_dialog_message">是否结束心电测量</string>
+    <string name="ecg_measure_dialog_message_low_time">本次测量时间过短，将不会记录数据，是否结束？</string>
+    <string name="ecg_measure_dialog_title">提示</string>
+
+    <!--自定义Dialog common_dialog_layout.xml-->
+    <string name="common_dialog_tv_title">消息提示</string>
+    <string name="common_dialog_tv_message">提示消息提示消息提示消息提示消息提示消息提示消息提示消息提示消息</string>
+    <string name="common_dialog_cancel">取消</string>
+    <string name="common_dialog_confirm">确定</string>
+</resources>
