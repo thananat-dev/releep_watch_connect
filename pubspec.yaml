@@ -1,6 +1,6 @@
 name: releep_watch_connect
 description: A new flutter plugin to Connect and sync data from releep watch.
-version: 0.0.1
+version: 0.0.1+1
 homepage: https://github.com/thananat-dev/releep_watch_connect.git
 
 environment:
