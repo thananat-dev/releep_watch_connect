@@ -395,12 +395,4 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
         return String(data: data, encoding: String.Encoding.utf8)
     }
 
-    func myArrayFunc<T>(inputArray:Array<T>) -> Array<T> {
-
-      var newArray = inputArray
-
-      // do stuff with newArray
-
-      return newArray
-    }
 }
