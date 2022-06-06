@@ -1,20 +1,15 @@
 #import "ReleepWatchConnectPlugin.h"
+#if __has_include(<releep_watch_connect/releep_watch_connect-Swift.h>)
+#import <releep_watch_connect/releep_watch_connect-Swift.h>
+#else
+// Support project import fallback if the generated compatibility header
+// is not copied when this plugin is created as a library.
+// https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
+#import "releep_watch_connect-Swift.h"
+#endif
 
 @implementation ReleepWatchConnectPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"releep_watch_connect"
-            binaryMessenger:[registrar messenger]];
-  ReleepWatchConnectPlugin* instance = [[ReleepWatchConnectPlugin alloc] init];
-  [registrar addMethodCallDelegate:instance channel:channel];
+  [SwiftReleepWatchConnectPlugin registerWithRegistrar:registrar];
 }
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  } else {
-    result(FlutterMethodNotImplemented);
-  }
-}
-
 @end
