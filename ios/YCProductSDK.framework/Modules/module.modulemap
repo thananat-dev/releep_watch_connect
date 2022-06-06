@@ -1,0 +1,11 @@
+framework module YCProductSDK {
+  umbrella header "YCProductSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module YCProductSDK.Swift {
+    header "YCProductSDK-Swift.h"
+    requires objc
+}
