@@ -52,30 +52,44 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                    
               }
           }
-          else{
-              YCProduct.scanningDevice { devices, error in
-              var scanBLEResponse : [ScanBLEResponse] = [ScanBLEResponse]()
-              devicesList = devices
-                let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
-                if index != nil {
-                    let device = devicesList[index ?? 0]
-                    
-                    YCProduct.connectDevice(device) { state, error in
+          else {
+              let deviceInfo = YCProduct.shared.currentPeripheral
+              if deviceInfo == nil {
+                  YCProduct.scanningDevice { devices, error in
+                  var scanBLEResponse : [ScanBLEResponse] = [ScanBLEResponse]()
+                  devicesList = devices
+                    let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
+                    if index != nil {
+                        let device = devicesList[index ?? 0]
                         
-                        if state == .connected {
-                            result(0)
+                        YCProduct.connectDevice(device) { state, error in
+                            
+                            if state == .connected {
+                                result(0)
+                            }
+                            else{
+                                result(state.rawValue)
+                            }
+                            
                         }
-                        else{
-                            result(state.rawValue)
-                        }
-                        
+                    }
+                    else{
+                        result(1)
                     }
                 }
-                else{
-                    result(1)
-                }
-            }
-            
+              }
+              else {
+                  YCProduct.connectDevice(deviceInfo!) { state, error in
+                      
+                      if state == .connected {
+                          result(0)
+                      }
+                      else{
+                          result(state.rawValue)
+                      }
+                      
+                  }
+              }
           }
       }
       else if call.method == "getConnectionState" {
@@ -128,7 +142,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                             "DBPValue": info.diastolicBloodPressure,
                             "bodyFatFloatValue": 0,
                             "OOValue": info.bloodOxygen,
-                            "bodyFatIntValue": info.fat,
+                            "bodyFatIntValue": Int(info.fat),
                             "tempIntValue": Int(info.temperature),
                             "tempFloatValue": Int(tempFloatStr) ?? 0,
                             "startTime": info.startTimeStamp,

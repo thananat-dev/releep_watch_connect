@@ -9,3 +9,7 @@
 ## 0.0.1+2
 
 * change ios to swift and add releep watch sdk for ios.
+
+## 0.0.1+3
+
+* fix get sleep for ios.
