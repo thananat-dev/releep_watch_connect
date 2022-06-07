@@ -53,13 +53,40 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
               }
           }
           else{
-            result(1)
+              YCProduct.scanningDevice { devices, error in
+              var scanBLEResponse : [ScanBLEResponse] = [ScanBLEResponse]()
+              devicesList = devices
+                let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
+                if index != nil {
+                    let device = devicesList[index ?? 0]
+                    
+                    YCProduct.connectDevice(device) { state, error in
+                        
+                        if state == .connected {
+                            result(0)
+                        }
+                        else{
+                            result(state.rawValue)
+                        }
+                        
+                    }
+                }
+                else{
+                    result(1)
+                }
+            }
+            
           }
       }
       else if call.method == "getConnectionState" {
           let device = YCProduct.shared.currentPeripheral
           print("getConnectionState" ,device as Any )
-          result(device)
+          if device == nil{
+              result(3)
+          }
+          else{
+              result(6)
+          }
       }
       else if call.method == "settingTime" {
           let device = YCProduct.shared.currentPeripheral
@@ -257,12 +284,22 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
               if state == .succeed, let datas = response as? [YCHealthDataSleep] {
                   var arrayList = Array<Any>()
                   for info in datas {
+                      var sleepDataList = Array<Any>()
                       //print(info.startTimeStamp, info.heartRate)
+                      for sleepData in info.sleepDetailDatas {
+                          sleepDataList.append(
+                            [
+                                "sleepStartTime":sleepData.startTimeStamp,
+                                "sleepLen":sleepData.duration,
+                                "sleepType":sleepData.sleepType.rawValue,
+                            ]
+                          )
+                      }
                       arrayList.append(
                         [
                             "deepSleepCount":info.deepSleepCount,
                             "lightSleepCount":info.lightSleepCount,
-                            "sleepData":info.sleepDetailDatas,
+                            "sleepData":sleepDataList,
                             "startTime": info.startTimeStamp,
                             "lightSleepTotal": info.lightSleepMinutes,
                             "deepSleepTotal": info.deepSleepMinutes,
