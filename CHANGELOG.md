@@ -5,3 +5,7 @@
 ## 0.0.1+1
 
 * change license  and add link pub.
+
+## 0.0.1+2
+
+* change ios to swift and add releep watch sdk for ios.
