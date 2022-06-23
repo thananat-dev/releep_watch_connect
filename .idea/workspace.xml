@@ -40,7 +40,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d95497c-5b4f-4842-af85-e70af2e853c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/achatsocial/releep_watch_connect/ScanBLEResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/achatsocial/releep_watch_connect/ScanBLEResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/releep_watch_connect.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/releep_watch_connect.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/achatsocial/releep_watch_connect/ReleepWatchConnectPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/achatsocial/releep_watch_connect/ReleepWatchConnectPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftReleepWatchConnectPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftReleepWatchConnectPlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/releep_watch_connect.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/releep_watch_connect.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +60,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="29Y8B9y9GB3IFvGAVzGZXuGAtpO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -58,7 +70,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="show.migrate.to.gradle.popup" value="false" />
@@ -90,5 +105,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

@@ -92,10 +92,6 @@ public class ReleepWatchConnectPlugin
       String timeNow = call.argument("timeNow");
       int code = settingWatchTime(timeNow);
       result.success(code);
-    } else if (call.method.equals("settingLang")) {
-      int langCode = call.argument("langCode");
-      int code = settingLanguage(langCode);
-      result.success(code);
     } else if (call.method.equals("syncHealthData")) {
       ArrayList lists = new ArrayList();
       YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistoryAll, new BleDataResponse() {
@@ -272,6 +268,84 @@ public class ReleepWatchConnectPlugin
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
           if (i == 0) {//delete success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }else if (call.method.equals("settingLang")) {
+      int langCode = call.argument("langCode");
+      YCBTClient.settingLanguage(langCode, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//settingBloodOxygenAlarm success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }
+    else if(call.method.equals("settingBloodOxygenAlarm")){
+      int value = call.argument("value");
+      YCBTClient.settingBloodOxygenAlarm(0x01,value, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//settingBloodOxygenAlarm success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }
+    else if(call.method.equals("settingTemperatureAlarm")){
+      int value = call.argument("value");
+      YCBTClient.settingTemperatureAlarm(true,value, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//settingBloodOxygenAlarm success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }
+    else if(call.method.equals("settingHeartAlarm")){
+      int highHeart = call.argument("highHeart");
+      int lowHeart = call.argument("lowHeart");
+      YCBTClient.settingHeartAlarm(0x01,highHeart,lowHeart, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//settingBloodOxygenAlarm success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }
+    else if(call.method.equals("settingBloodPressAlarm")){
+      int maxSBP = call.argument("maxSBP");
+      int maxDBP = call.argument("maxDBP");
+      int minSBP = call.argument("minSBP");
+      int minDBP = call.argument("minDBP");
+      YCBTClient.settingBloodAlarm(0x01,maxSBP,maxDBP,minSBP,minDBP, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//settingBloodOxygenAlarm success
             new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
           else {

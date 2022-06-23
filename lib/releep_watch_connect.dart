@@ -93,6 +93,35 @@ class ReleepWatchConnect {
     return res_mode;
   }
 
+  static Future<dynamic> settingLanguage(lang) async {
+    //0x00:English 0x01: Chinese 0x02: Russian 0x03: German 0x04: French 0x05: Japanese 0x06: Spanish 0x07: Italian 0x08: Portuguese 0x09: Korean 0x0A: Polish 0x0B: Malay 0x0C: Traditional Chinese 0xFF:other
+    var res_mode =
+    await _channel.invokeMethod('settingLang', {'langCode': lang});
+    return res_mode;
+  }
+
+  static Future<dynamic> settingBloodOxygenAlarm(value) async {
+    // value is number of bloodOxygen Minimum blood oxygen alarm threshold 80-95
+    var res_mode =
+    await _channel.invokeMethod('settingBloodOxygenAlarm', {'value': value});
+    return res_mode;
+  }
+
+  static Future<dynamic> settingTemperatureAlarm(value) async {
+    // Temperature alarm upper limit (0-127)
+    var res_mode =
+    await _channel.invokeMethod('settingTemperatureAlarm', {'value': value});
+    return res_mode;
+  }
+
+  static Future<dynamic> settingHeartAlarm(highHeart,lowHeart) async {
+   // * @param highHeart Maximum heart rate alarm 100 – 240
+   // * @param lowHeart Minimum heart rate alarm 30 - 60
+    var res_mode =
+    await _channel.invokeMethod('settingHeartAlarm', {'highHeart': highHeart,'lowHeart': lowHeart});
+    return res_mode;
+  }
+
   static Future<dynamic> deleteHealthAll() async {
     var dataHealthDel = await _channel.invokeMethod('deleteHistoryHealth');
     return dataHealthDel;

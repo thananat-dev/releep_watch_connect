@@ -13,3 +13,7 @@
 ## 0.0.1+3
 
 * fix get sleep for ios.
+
+## 0.0.1+4
+
+* add setting releep watch.

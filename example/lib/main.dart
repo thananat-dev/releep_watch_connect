@@ -144,6 +144,38 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<Null> _settingLangReleepWatch(lang) async {
+    int code = await ReleepWatchConnect.settingLanguage(lang);
+    debugPrint("_settingLangReleepWatch Res ${code}");
+    setState(() {
+      res_main = "_settingLangReleepWatch :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingBloodOxygenAlarm(value) async {
+    int code = await ReleepWatchConnect.settingBloodOxygenAlarm(value);
+    debugPrint("_settingBloodOxygenAlarm Res ${code}");
+    setState(() {
+      res_main = "_settingBloodOxygenAlarm :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingTemperatureAlarm(value) async {
+    int code = await ReleepWatchConnect.settingTemperatureAlarm(value);
+    debugPrint("settingTemperatureAlarm Res ${code}");
+    setState(() {
+      res_main = "settingTemperatureAlarm :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingHeartAlarm(highValue,lowValue) async {
+    int code = await ReleepWatchConnect.settingHeartAlarm(highValue,lowValue);
+    debugPrint("settingHeartAlarm Res ${code}");
+    setState(() {
+      res_main = "settingHeartAlarm :"+ code.toString();
+    });
+  }
+
   void _startWatchScan() {
     setState(() {
       _listWatch = [];
@@ -218,6 +250,24 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: _deleteHealthAll,
                         child: const Text("Delete Health All")),
+                    ElevatedButton(
+                        onPressed: () => _settingLangReleepWatch(0x00),
+                        child: const Text("Setting Lang EN")),
+                    ElevatedButton(
+                        onPressed: () => _settingLangReleepWatch(0x01),
+                        child: const Text("Setting Lang CN")),
+                    ElevatedButton(
+                        onPressed: () => _settingLangReleepWatch(0x0D),
+                        child: const Text("Setting Lang TH")),
+                    ElevatedButton(
+                        onPressed: () => _settingTemperatureAlarm(38),
+                        child: const Text("Setting Temp 38")),
+                    ElevatedButton(
+                        onPressed: () => _settingBloodOxygenAlarm(95),
+                        child: const Text("Setting Spo2 95")),
+                    ElevatedButton(
+                        onPressed: () => _settingHeartAlarm(100,45),
+                        child: const Text("Setting HR 100,45")),
                   ],
                 ),
                 Wrap(
