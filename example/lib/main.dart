@@ -152,6 +152,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+
   Future<Null> _settingBloodOxygenAlarm(value) async {
     int code = await ReleepWatchConnect.settingBloodOxygenAlarm(value);
     debugPrint("_settingBloodOxygenAlarm Res ${code}");
@@ -173,6 +174,38 @@ class _MyAppState extends State<MyApp> {
     debugPrint("settingHeartAlarm Res ${code}");
     setState(() {
       res_main = "settingHeartAlarm :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingWorkingMode(mode) async {
+    int code = await ReleepWatchConnect.settingWorkingMode(mode);
+    debugPrint("_settingWorkingMode Res ${code}");
+    setState(() {
+      res_main = "_settingWorkingMode :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingHeartMonitor(mode) async {
+    int code = await ReleepWatchConnect.settingHeartMonitor(mode);
+    debugPrint("_settingHeartMonitor Res ${code}");
+    setState(() {
+      res_main = "_settingHeartMonitor :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingTemperatureMonitor(mode) async {
+    int code = await ReleepWatchConnect.settingTemperatureMonitor(mode);
+    debugPrint("_settingTemperatureMonitor Res ${code}");
+    setState(() {
+      res_main = "_settingTemperatureMonitor :"+ code.toString();
+    });
+  }
+
+  Future<Null> _settingBloodOxygenModeMonitor(mode) async {
+    int code = await ReleepWatchConnect.settingBloodOxygenModeMonitor(mode);
+    debugPrint("_settingBloodOxygenModeMonitor Res ${code}");
+    setState(() {
+      res_main = "_settingBloodOxygenModeMonitor :"+ code.toString();
     });
   }
 
@@ -268,6 +301,18 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: () => _settingHeartAlarm(100,45),
                         child: const Text("Setting HR 100,45")),
+                    ElevatedButton(
+                        onPressed: () => _settingWorkingMode(0x00),
+                        child: const Text("Setting Mode normal")),
+                    ElevatedButton(
+                        onPressed: () => _settingWorkingMode(0x01),
+                        child: const Text("Setting Mode care")),
+                    ElevatedButton(
+                        onPressed: () => _settingWorkingMode(0x02),
+                        child: const Text("Setting Mode Save Power")),
+                    ElevatedButton(
+                        onPressed: () => _settingHeartMonitor(5),
+                        child: const Text("Setting Heart Monitor 5m")),
                   ],
                 ),
                 Wrap(

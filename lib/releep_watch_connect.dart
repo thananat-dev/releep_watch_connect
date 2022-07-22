@@ -93,6 +93,27 @@ class ReleepWatchConnect {
     return res_mode;
   }
 
+  static Future<dynamic> settingHeartMonitor(mode) async {
+    //intervalTime : time mimute
+    var res_mode =
+    await _channel.invokeMethod('settingHeartMonitor', {'intervalTime': mode});
+    return res_mode;
+  }
+
+  static Future<dynamic> settingTemperatureMonitor(mode) async {
+    //intervalTime : time mimute
+    var res_mode =
+    await _channel.invokeMethod('settingTemperatureMonitor', {'intervalTime': mode});
+    return res_mode;
+  }
+
+  static Future<dynamic> settingBloodOxygenModeMonitor(mode) async {
+    //intervalTime : time mimute
+    var res_mode =
+    await _channel.invokeMethod('settingBloodOxygenModeMonitor', {'intervalTime': mode});
+    return res_mode;
+  }
+
   static Future<dynamic> settingLanguage(lang) async {
     //0x00:English 0x01: Chinese 0x02: Russian 0x03: German 0x04: French 0x05: Japanese 0x06: Spanish 0x07: Italian 0x08: Portuguese 0x09: Korean 0x0A: Polish 0x0B: Malay 0x0C: Traditional Chinese 0xFF:other
     var res_mode =

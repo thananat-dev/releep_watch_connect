@@ -276,6 +276,48 @@ public class ReleepWatchConnectPlugin
           }
         }
       });
+    }else if(call.method.equals("settingHeartMonitor")){
+      int time = call.argument("intervalTime");
+      YCBTClient.settingHeartMonitor(0x01,time, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//delete success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }else if(call.method.equals("settingTemperatureMonitor")){
+      int time = call.argument("intervalTime");
+      YCBTClient.settingTemperatureMonitor(true,time, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//delete success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
+    }else if(call.method.equals("settingBloodOxygenModeMonitor")){
+      int time = call.argument("intervalTime");
+      YCBTClient.settingBloodOxygenModeMonitor(true,time, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (i == 0) {//delete success
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
+          }
+          else {
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+
+          }
+        }
+      });
     }else if (call.method.equals("settingLang")) {
       int langCode = call.argument("langCode");
       YCBTClient.settingLanguage(langCode, new BleDataResponse() {

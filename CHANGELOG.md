@@ -17,3 +17,7 @@
 ## 0.0.1+4
 
 * add setting releep watch.
+
+## 0.0.1+5
+
+* add setting monitering.

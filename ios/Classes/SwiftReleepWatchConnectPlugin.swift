@@ -374,6 +374,45 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 }
             }
         }
+        else if call.method == "settingHeartMonitor" {
+                    let args = call.arguments as! Dictionary<String, Any>
+                    let time = args["intervalTime"] as! UInt8
+                    YCProduct.setDeviceHeartRateMonitoringMode(isEnable: true, interval: time) { state, response in
+                        if state == .succeed {
+                            print("success")
+                            result(0)
+                        } else {
+                            print("fail")
+                            result(nil)
+                        }
+                    }
+        }
+        else if call.method == "settingTemperatureMonitor" {
+                    let args = call.arguments as! Dictionary<String, Any>
+                    let time = args["intervalTime"] as! UInt8
+                    YCProduct.setDeviceTemperatureMonitoringMode(isEnable: true, interval: time) { state, response in
+                                if state == .succeed {
+                                    print("success")
+                                    result(0)
+                                } else {
+                                    print("fail")
+                                    result(nil)
+                                }
+                            }
+        }
+        else if call.method == "settingBloodOxygenModeMonitor" {
+                    let args = call.arguments as! Dictionary<String, Any>
+                    let time = args["intervalTime"] as! UInt8
+                    YCProduct.setDeviceBloodOxygenMonitoringMode(isEnable: true, interval: time) { state, response in
+                                if state == .succeed {
+                                            print("success")
+                                            result(0)
+                                        } else {
+                                            print("fail")
+                                            result(nil)
+                                        }
+                                    }
+        }
         else if call.method == "settingBloodOxygenAlarm" {
             let args = call.arguments as! Dictionary<String, Any>
             let value = args["value"] as! UInt8
