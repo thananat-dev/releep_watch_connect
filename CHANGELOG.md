@@ -21,3 +21,7 @@
 ## 0.0.1+5
 
 * add setting monitering.
+
+## 0.0.1+6
+
+* add disable notification push device.

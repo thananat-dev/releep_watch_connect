@@ -144,20 +144,29 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<Null> _disableNotification() async {
+    var res = await ReleepWatchConnect.disbleWatchNotification();
+    debugPrint("disbleWatchNotification -->  ${res.toString()}");
+    setState(() {
+      setState(() {
+        res_main = res.toString();
+      });
+    });
+  }
+
   Future<Null> _settingLangReleepWatch(lang) async {
     int code = await ReleepWatchConnect.settingLanguage(lang);
     debugPrint("_settingLangReleepWatch Res ${code}");
     setState(() {
-      res_main = "_settingLangReleepWatch :"+ code.toString();
+      res_main = "_settingLangReleepWatch :" + code.toString();
     });
   }
-
 
   Future<Null> _settingBloodOxygenAlarm(value) async {
     int code = await ReleepWatchConnect.settingBloodOxygenAlarm(value);
     debugPrint("_settingBloodOxygenAlarm Res ${code}");
     setState(() {
-      res_main = "_settingBloodOxygenAlarm :"+ code.toString();
+      res_main = "_settingBloodOxygenAlarm :" + code.toString();
     });
   }
 
@@ -165,15 +174,15 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingTemperatureAlarm(value);
     debugPrint("settingTemperatureAlarm Res ${code}");
     setState(() {
-      res_main = "settingTemperatureAlarm :"+ code.toString();
+      res_main = "settingTemperatureAlarm :" + code.toString();
     });
   }
 
-  Future<Null> _settingHeartAlarm(highValue,lowValue) async {
-    int code = await ReleepWatchConnect.settingHeartAlarm(highValue,lowValue);
+  Future<Null> _settingHeartAlarm(highValue, lowValue) async {
+    int code = await ReleepWatchConnect.settingHeartAlarm(highValue, lowValue);
     debugPrint("settingHeartAlarm Res ${code}");
     setState(() {
-      res_main = "settingHeartAlarm :"+ code.toString();
+      res_main = "settingHeartAlarm :" + code.toString();
     });
   }
 
@@ -181,7 +190,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingWorkingMode(mode);
     debugPrint("_settingWorkingMode Res ${code}");
     setState(() {
-      res_main = "_settingWorkingMode :"+ code.toString();
+      res_main = "_settingWorkingMode :" + code.toString();
     });
   }
 
@@ -189,7 +198,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingHeartMonitor(mode);
     debugPrint("_settingHeartMonitor Res ${code}");
     setState(() {
-      res_main = "_settingHeartMonitor :"+ code.toString();
+      res_main = "_settingHeartMonitor :" + code.toString();
     });
   }
 
@@ -197,7 +206,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingTemperatureMonitor(mode);
     debugPrint("_settingTemperatureMonitor Res ${code}");
     setState(() {
-      res_main = "_settingTemperatureMonitor :"+ code.toString();
+      res_main = "_settingTemperatureMonitor :" + code.toString();
     });
   }
 
@@ -205,7 +214,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingBloodOxygenModeMonitor(mode);
     debugPrint("_settingBloodOxygenModeMonitor Res ${code}");
     setState(() {
-      res_main = "_settingBloodOxygenModeMonitor :"+ code.toString();
+      res_main = "_settingBloodOxygenModeMonitor :" + code.toString();
     });
   }
 
@@ -299,7 +308,7 @@ class _MyAppState extends State<MyApp> {
                         onPressed: () => _settingBloodOxygenAlarm(95),
                         child: const Text("Setting Spo2 95")),
                     ElevatedButton(
-                        onPressed: () => _settingHeartAlarm(100,45),
+                        onPressed: () => _settingHeartAlarm(100, 45),
                         child: const Text("Setting HR 100,45")),
                     ElevatedButton(
                         onPressed: () => _settingWorkingMode(0x00),
@@ -313,6 +322,9 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: () => _settingHeartMonitor(5),
                         child: const Text("Setting Heart Monitor 5m")),
+                    ElevatedButton(
+                        onPressed: () => _disableNotification(),
+                        child: const Text("Disable Push Notification")),
                   ],
                 ),
                 Wrap(

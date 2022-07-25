@@ -479,6 +479,17 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 }
             }
         }
+        else if call.method == "disbleWatchNotification" {
+            YCProduct.setDeviceInfoPush(isEnable: false, infoPushType:[.call,.email,.line,.facebook,.instagram,.linkedIn,.messenger,.sms,.telegram,.twitter,.skype,.weChat,.weiBo,.whatsAPP,.snapchat,.qq]) { state, response in
+                if state == .succeed {
+                    print("disbleWatchNotification succeed")
+                    result(0)
+                }
+                else{
+                    result(nil)
+                }
+            }
+        }
         else if call.method == "deleteHistoryHealth" {
             YCProduct.deleteHealthData(datatType:
                                         YCDeleteHealthDataType.combinedData) { state, response in
