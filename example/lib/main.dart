@@ -21,12 +21,13 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   late StreamSubscription _ReleepWatchScanSubscription;
   var _listWatch = [];
-  var res_main = "no response";
+  final TextEditingController _resReleepWatch = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    _resReleepWatch.text = "no response";
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -56,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     _cancelWatchScan();
     debugPrint("connect Res ${code}");
     setState(() {
-      res_main = code.toString();
+      _resReleepWatch.text = code.toString();
     });
   }
 
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthAll();
     debugPrint("syncHealthAll --> HealthAll ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -72,7 +73,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthStep();
     debugPrint("_syncHealthStep --> Step ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -80,7 +81,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthHeartRate();
     debugPrint("_syncHealthHR --> HR ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -88,7 +89,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthTemp();
     debugPrint("_syncHealthTemp --> Temp ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -96,7 +97,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthSPO2();
     debugPrint("_syncHealthSPO2 --> SPO2 ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -104,7 +105,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthBlood();
     debugPrint("_syncHealthBloodPresure --> BloodPresure ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -112,7 +113,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthSport();
     debugPrint("_syncHealthSport --> Sport ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -120,7 +121,7 @@ class _MyAppState extends State<MyApp> {
     var res = await ReleepWatchConnect.syncHealthSleep();
     debugPrint("_syncHealthSleep --> Sleep ${res.toString()}");
     setState(() {
-      res_main = res.toString();
+      _resReleepWatch.text = res.toString();
     });
   }
 
@@ -129,7 +130,7 @@ class _MyAppState extends State<MyApp> {
     debugPrint("_syncHealthECG --> ECG ${res.toString()}");
     setState(() {
       setState(() {
-        res_main = res.toString();
+        _resReleepWatch.text = res.toString();
       });
     });
   }
@@ -139,7 +140,7 @@ class _MyAppState extends State<MyApp> {
     debugPrint("deleteHealthAll --> HR ${res.toString()}");
     setState(() {
       setState(() {
-        res_main = res.toString();
+        _resReleepWatch.text = res.toString();
       });
     });
   }
@@ -149,7 +150,7 @@ class _MyAppState extends State<MyApp> {
     debugPrint("disbleWatchNotification -->  ${res.toString()}");
     setState(() {
       setState(() {
-        res_main = res.toString();
+        _resReleepWatch.text = res.toString();
       });
     });
   }
@@ -158,7 +159,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingLanguage(lang);
     debugPrint("_settingLangReleepWatch Res ${code}");
     setState(() {
-      res_main = "_settingLangReleepWatch :" + code.toString();
+      _resReleepWatch.text = "_settingLangReleepWatch :" + code.toString();
     });
   }
 
@@ -166,7 +167,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingBloodOxygenAlarm(value);
     debugPrint("_settingBloodOxygenAlarm Res ${code}");
     setState(() {
-      res_main = "_settingBloodOxygenAlarm :" + code.toString();
+      _resReleepWatch.text = "_settingBloodOxygenAlarm :" + code.toString();
     });
   }
 
@@ -174,7 +175,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingTemperatureAlarm(value);
     debugPrint("settingTemperatureAlarm Res ${code}");
     setState(() {
-      res_main = "settingTemperatureAlarm :" + code.toString();
+      _resReleepWatch.text = "settingTemperatureAlarm :" + code.toString();
     });
   }
 
@@ -182,7 +183,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingHeartAlarm(highValue, lowValue);
     debugPrint("settingHeartAlarm Res ${code}");
     setState(() {
-      res_main = "settingHeartAlarm :" + code.toString();
+      _resReleepWatch.text = "settingHeartAlarm :" + code.toString();
     });
   }
 
@@ -190,7 +191,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingWorkingMode(mode);
     debugPrint("_settingWorkingMode Res ${code}");
     setState(() {
-      res_main = "_settingWorkingMode :" + code.toString();
+      _resReleepWatch.text = "_settingWorkingMode :" + code.toString();
     });
   }
 
@@ -198,7 +199,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingHeartMonitor(mode);
     debugPrint("_settingHeartMonitor Res ${code}");
     setState(() {
-      res_main = "_settingHeartMonitor :" + code.toString();
+      _resReleepWatch.text = "_settingHeartMonitor :" + code.toString();
     });
   }
 
@@ -206,7 +207,7 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingTemperatureMonitor(mode);
     debugPrint("_settingTemperatureMonitor Res ${code}");
     setState(() {
-      res_main = "_settingTemperatureMonitor :" + code.toString();
+      _resReleepWatch.text = "_settingTemperatureMonitor :" + code.toString();
     });
   }
 
@@ -214,7 +215,8 @@ class _MyAppState extends State<MyApp> {
     int code = await ReleepWatchConnect.settingBloodOxygenModeMonitor(mode);
     debugPrint("_settingBloodOxygenModeMonitor Res ${code}");
     setState(() {
-      res_main = "_settingBloodOxygenModeMonitor :" + code.toString();
+      _resReleepWatch.text =
+          "_settingBloodOxygenModeMonitor :" + code.toString();
     });
   }
 
@@ -329,8 +331,13 @@ class _MyAppState extends State<MyApp> {
                 ),
                 Wrap(
                   children: [
-                    Text("res : ${res_main}"),
+                    Text("res :"),
                   ],
+                ),
+                TextField(
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  controller: _resReleepWatch,
                 ),
                 ListView.builder(
                   shrinkWrap: true,
