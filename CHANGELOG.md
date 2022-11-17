@@ -25,3 +25,7 @@
 ## 0.0.1+6
 
 * add disable notification push device.
+
+## 0.0.1+7
+
+* fix permission for android 12.

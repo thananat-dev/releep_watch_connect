@@ -57,7 +57,9 @@ public class ReleepWatchConnectPlugin
       Manifest.permission.ACCESS_FINE_LOCATION,
       Manifest.permission.READ_CONTACTS,
       Manifest.permission.WRITE_CONTACTS,
-      Manifest.permission.CALL_PHONE
+      Manifest.permission.CALL_PHONE,
+      Manifest.permission.BLUETOOTH_SCAN,
+      Manifest.permission.BLUETOOTH_CONNECT
   };
 
   @Override
