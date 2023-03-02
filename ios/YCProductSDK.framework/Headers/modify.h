@@ -37,7 +37,7 @@ bool modify(uint8_t *dst,
 bool thumbnail_modify(uint8_t *src, uint32_t size, const uint8_t *thumbnail_src);
 
 
-uint8_t *bmp888_to_565(int32_t dst_size, uint8_t *src);
-uint8_t *bmp888_to_565_thumbnail(int32_t dst_size, uint8_t *src);
+uint8_t *bmp888_to_565(int32_t dst_size, uint8_t *src, bool isFlipColor);
+uint8_t *bmp888_to_565_thumbnail(int32_t dst_size, uint8_t *src, bool isFlipColor);
 
 #endif //BIN_MODIFY_H

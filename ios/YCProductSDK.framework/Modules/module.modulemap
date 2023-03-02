@@ -6,6 +6,6 @@ framework module YCProductSDK {
 }
 
 module YCProductSDK.Swift {
-    header "YCProductSDK-Swift.h"
-    requires objc
+  header "YCProductSDK-Swift.h"
+  requires objc
 }

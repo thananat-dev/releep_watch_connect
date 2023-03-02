@@ -29,3 +29,7 @@
 ## 0.0.1+7
 
 * fix permission for android 12.
+
+## 0.0.2
+
+* fix update ycproduct for xcode 14.

@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param red 颜色
 /// @param green 颜色
 /// @param blue 颜色
+/// @param isFlipColor 是否要翻转颜色
 + (NSData *)modifyWatchFace:(NSData *)fileData
                    fileSize:(NSInteger)fileSize
                   imageData:(NSData *)imageData
@@ -36,7 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
                       timeY:(int)y
                         red:(Byte)red
                       green:(Byte)green
-                       blue:(Byte)blue;
+                       blue:(Byte)blue
+                isFlipColor:(BOOL)isFlipColor;
 
 @end
 

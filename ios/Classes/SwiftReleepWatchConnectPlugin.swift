@@ -56,7 +56,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 let deviceInfo = YCProduct.shared.currentPeripheral
                 if deviceInfo == nil {
                     YCProduct.scanningDevice { devices, error in
-                        var scanBLEResponse : [ScanBLEResponse] = [ScanBLEResponse]()
+                        var _ : [ScanBLEResponse] = [ScanBLEResponse]()
                         devicesList = devices
                         let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
                         if index != nil {
@@ -119,7 +119,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncHealthData" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.combinedData) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.combinedData) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataCombinedData] {
                     
@@ -161,7 +161,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncHeartRate" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.heartRate) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.heartRate) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataHeartRate] {
                     var arrayList = Array<Any>()
@@ -182,7 +182,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncBlood" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.bloodPressure) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.bloodPressure) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataBloodPressure] {
                     
@@ -207,7 +207,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncSPO2" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.bloodOxygen) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.bloodOxygen) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataBloodOxygen] {
                     
@@ -223,7 +223,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncTemp" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.bodyTemperature) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.bodyTemperature) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataBodyTemperature] {
                     
@@ -239,7 +239,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncStep" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.step) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.step) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataStep] {
                     
@@ -268,7 +268,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncSport" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.sportModeHistoryData) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.sportModeHistoryData) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataSportModeHistory] {
                     var arrayList = Array<Any>()
@@ -293,7 +293,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "syncSleep" {
-            YCProduct.queryHealthData(datatType: YCQueryHealthDataType.sleep) { state, response in
+            YCProduct.queryHealthData(dataType: YCQueryHealthDataType.sleep) { state, response in
                 
                 if state == .succeed, let datas = response as? [YCHealthDataSleep] {
                     var arrayList = Array<Any>()
@@ -341,9 +341,11 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 }
             }
         }
-        else if call.method == "disconnectReleepWatch" {
+         else if call.method == "disconnectReleepWatch" {
             let device = YCProduct.shared.currentPeripheral
-            YCProduct.disconnectDevice(device)
+//            YCProduct.disconnectDevice(device)
+             YCProduct.disconnectDevice(device) { state, _ in
+             }
             result(0)
         }
         else if call.method == "getCurrentSystemMode" {
@@ -480,7 +482,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "disbleWatchNotification" {
-            YCProduct.setDeviceInfoPush(isEnable: false, infoPushType:[.call,.email,.line,.facebook,.instagram,.linkedIn,.messenger,.sms,.telegram,.twitter,.skype,.weChat,.weiBo,.whatsAPP,.snapchat,.qq]) { state, response in
+            YCProduct.setDeviceInfoPush(isEnable: false, infoPushType:[.call,.email,.line,.facebook,.instagram,.linkedIn,.messenger,.sms,.telegram,.twitter,.skype,.whatsAPP,.snapchat,.qq]) { state, response in
                 if state == .succeed {
                     print("disbleWatchNotification succeed")
                     result(0)
@@ -491,7 +493,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "deleteHistoryHealth" {
-            YCProduct.deleteHealthData(datatType:
+            YCProduct.deleteHealthData(dataType:
                                         YCDeleteHealthDataType.combinedData) { state, response in
                 if state == .succeed {
                     print("Delete succeed")
