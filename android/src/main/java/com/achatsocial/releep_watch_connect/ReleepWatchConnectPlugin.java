@@ -109,7 +109,6 @@ public class ReleepWatchConnectPlugin
       result.success(code);
     }else if (call.method.equals("getConnectionState")) {
       int bleState = YCBTClient.connectState();
-      String watchMac = sharedPref.getString("KEY_BLE_WATCH", "");
       if (bleState == Constants.BLEState.ReadWriteOK){  //Connected successfully
         android.util.Log.e("BLEState", "Connected");
       }
@@ -294,7 +293,7 @@ public class ReleepWatchConnectPlugin
       YCBTClient.settingWorkingMode(mode, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
-          if (i == 0) {//delete success
+          if (i == 0) {// success
             new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
           else {
@@ -308,7 +307,7 @@ public class ReleepWatchConnectPlugin
       YCBTClient.settingHeartMonitor(0x01,time, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
-          if (i == 0) {//delete success
+          if (i == 0) {// success
             new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
           else {
@@ -322,7 +321,7 @@ public class ReleepWatchConnectPlugin
       YCBTClient.settingTemperatureMonitor(true,time, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
-          if (i == 0) {//delete success
+          if (i == 0) {// success
             new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
           else {
@@ -336,7 +335,7 @@ public class ReleepWatchConnectPlugin
       YCBTClient.settingBloodOxygenModeMonitor(true,time, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
-          if (i == 0) {//delete success
+          if (i == 0) {// success
             new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
           else {
@@ -439,7 +438,10 @@ public class ReleepWatchConnectPlugin
       });
     }
     else if (call.method.equals("startService")) {
-      startForegroundService();
+      String watchMac = sharedPref.getString("KEY_BLE_WATCH", "");
+      if(!watchMac.equals("")) {
+        startForegroundService();
+      }
       result.success(true);
     }else if (call.method.equals("stopService")) {
       stopForegroundService();

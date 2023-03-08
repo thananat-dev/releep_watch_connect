@@ -125,7 +125,7 @@ public class WatchConnectionService extends Service {
         @Override
         public void run() {
 
-            if(!serverIP.equals("") && !userLoginToken.equals("")){
+            if(!serverIP.equals("") && !userLoginToken.equals("") && !watchMac.equals("")){
                 UtilReleepWatch.syncHealthData(watchMac,userLoginToken,serverIP);
             }
 

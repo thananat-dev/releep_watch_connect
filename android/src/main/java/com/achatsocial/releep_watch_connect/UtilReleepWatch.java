@@ -135,6 +135,8 @@ public class UtilReleepWatch {
 
                     String jsonData = getHealthDataJson(lists,macAddress);
                     saveReleepHealthData(jsonData, userLoginToken, serverIP);
+                    syncSleepData(macAddress,userLoginToken,serverIP);
+                    syncSportData(macAddress,userLoginToken,serverIP);
                 } else {
                     android.util.Log.e("Health_HistoryAll", "no ..health All..data....");
                 }
@@ -236,6 +238,7 @@ public class UtilReleepWatch {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
+                    DeleteAllHealthData();
                     android.util.Log.i("saveReleepHealthSleep", jsonData);
                 } else {
                     if (response.code() == 401) {
@@ -301,6 +304,21 @@ public class UtilReleepWatch {
                         //checkValidateToken();
                     }
                     android.util.Log.e("saveReleepHealthSport", "Unexpected response code: " + response.code());
+                }
+            }
+        });
+    }
+
+    private static void DeleteAllHealthData(){
+        YCBTClient.deleteHealthHistoryData(Constants.DATATYPE.Health_DeleteAll, new BleDataResponse() {
+            @Override
+            public void onDataResponse(int i, float v, HashMap hashMap) {
+                if (i == 0) {//delete success
+                    android.util.Log.i("deleteHealthHistoryData","Success");
+                }
+                else {
+                    android.util.Log.e("deleteHealthHistoryData", "Unexpected ");
+
                 }
             }
         });
