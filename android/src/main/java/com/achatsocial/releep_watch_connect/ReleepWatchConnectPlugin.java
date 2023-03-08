@@ -483,6 +483,7 @@ public class ReleepWatchConnectPlugin
   }
 
   public void stopForegroundService() {
+    YCBTClient.disconnectBle();
     Context context = activity.getApplicationContext();
     Intent serviceIntent = new Intent(context, WatchConnectionService.class);
     context.stopService(serviceIntent);
