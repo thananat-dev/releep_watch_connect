@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:releep_watch_connect/releep_watch_connect.dart';
+import 'package:releep_watch_connect/util_releep_watch.dart';
 
 void main() {
   runApp(const MyApp());
@@ -220,6 +221,16 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  //_getConnectState
+  Future<Null> _getConnectState() async {
+    int code = await ReleepWatchConnect.getConnectionState();
+    debugPrint("getConnectionState Res ${code}");
+    setState(() {
+      _resReleepWatch.text =
+          "getConnectionState :" + UtilReleepWatch.getStatusName(code);
+    });
+  }
+
   void _startWatchScan() {
     setState(() {
       _listWatch = [];
@@ -327,6 +338,17 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: () => _disableNotification(),
                         child: const Text("Disable Push Notification")),
+                    ElevatedButton(
+                        onPressed: () => _getConnectState(),
+                        child: const Text("Connect State")),
+                    ElevatedButton(
+                        onPressed: () =>
+                            ReleepWatchConnect.startForegroundTask(),
+                        child: const Text("startTask")),
+                    ElevatedButton(
+                        onPressed: () =>
+                            ReleepWatchConnect.stopForegroundTask(),
+                        child: const Text("stopTask")),
                   ],
                 ),
                 Wrap(

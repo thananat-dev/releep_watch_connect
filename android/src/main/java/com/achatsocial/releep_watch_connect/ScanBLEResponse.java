@@ -11,4 +11,12 @@ public class ScanBLEResponse {
         this.DeviceName = deviceName;
         this.MacAddress = macAddress;
     }
+
+    public String getMacAddress() {
+        return MacAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.MacAddress = macAddress;
+    }
 }

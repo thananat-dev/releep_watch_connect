@@ -1,14 +1,27 @@
 import 'dart:async';
+import 'dart:isolate';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:releep_watch_connect/util_releep_watch.dart';
+
+String _status = "unknown";
 
 class ReleepWatchConnect {
   static const MethodChannel _channel = MethodChannel('releep_watch_connect');
   static const stream = EventChannel('scan_releep_watch');
+  static ReceivePort? _receivePort;
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;
+  }
+
+  static Future<int> initData(serverIp, userToken) async {
+    // code : 0 = OK 1 = Fail 2 = Time out
+    final int code = await _channel.invokeMethod(
+        'initData', {'serverIP': serverIp, 'userToken': userToken});
+    return code;
   }
 
   static Future<int> connectWatch(macAddress) async {
@@ -19,6 +32,8 @@ class ReleepWatchConnect {
   }
 
   static Future<int> getConnectionState() async {
+    // Binding the framework to the flutter engine.
+    WidgetsFlutterBinding.ensureInitialized();
     // public static final int TimeOut = 1;
     // public static final int NotOpen = 2;
     // public static final int Disconnect = 3;
@@ -26,6 +41,7 @@ class ReleepWatchConnect {
     // public static final int Connecting = 5;
     // public static final int Connected = 6;
     final int code = await _channel.invokeMethod('getConnectionState');
+    print("Watch Status:" + UtilReleepWatch.getStatusName(code));
     return code;
   }
 
@@ -162,4 +178,14 @@ class ReleepWatchConnect {
   static Stream get scanReleepWatch => stream.receiveBroadcastStream("scan");
 
   //static Stream get syncReleepWatch => stream.receiveBroadcastStream("sync");
+
+  static Future<bool> startForegroundTask() async {
+    var res_mode = await _channel.invokeMethod('startService');
+    return res_mode;
+  }
+
+  static Future<bool> stopForegroundTask() async {
+    var res_mode = await _channel.invokeMethod('stopService');
+    return res_mode;
+  }
 }

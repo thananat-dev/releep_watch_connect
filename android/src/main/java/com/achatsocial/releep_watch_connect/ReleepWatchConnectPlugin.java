@@ -1,10 +1,15 @@
 package com.achatsocial.releep_watch_connect;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -47,6 +52,7 @@ public class ReleepWatchConnectPlugin
   private EventChannel stream_chanel;
 
   private List<String> listVal = new ArrayList<>();
+  ArrayList<ScanBLEResponse> listWatch = new ArrayList<ScanBLEResponse>();
   private Gson gson = new Gson();
 
   private String[] permissionArray = new String[] {
@@ -76,19 +82,38 @@ public class ReleepWatchConnectPlugin
 
   }
 
+
+
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+//    SharedPreferences sharedPref = activity.getActivity().getPreferences(Context.MODE_PRIVATE);
+    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+
     if (call.method.equals("getPlatformVersion")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else if (call.method.equals("connectReleepWatch")) {
+    }else if (call.method.equals("initData")) {
+      String userLoginToken = call.argument("userToken");
+      String serverIP = call.argument("serverIP");
+
+      SharedPreferences.Editor editor = sharedPref.edit();
+      editor.putString("USER_LOGIN_TOKEN", userLoginToken);
+      editor.putString("SERVER_IP", serverIP);
+      editor.apply();
+      result.success(0);
+    }else if (call.method.equals("connectReleepWatch")) {
       String macAddress = call.argument("releepWatchMac");
-      int code = connectWatchBleWithMac(macAddress);
+      SharedPreferences.Editor editor = sharedPref.edit();
+      editor.putString("KEY_BLE_WATCH", macAddress);
+      editor.apply();
+      int code = UtilReleepWatch.connectWatchBleWithMac(macAddress);
       result.success(code);
     }else if (call.method.equals("getConnectionState")) {
       int bleState = YCBTClient.connectState();
-      if (bleState == Constants.BLEState.Connected){  //Connected successfully
+      String watchMac = sharedPref.getString("KEY_BLE_WATCH", "");
+      if (bleState == Constants.BLEState.ReadWriteOK){  //Connected successfully
         android.util.Log.e("BLEState", "Connected");
       }
+
       result.success(bleState);
     } else if (call.method.equals("settingTime")) {
       String timeNow = call.argument("timeNow");
@@ -412,7 +437,15 @@ public class ReleepWatchConnectPlugin
           }
         }
       });
-    }  else {
+    }
+    else if (call.method.equals("startService")) {
+      startForegroundService();
+      result.success(true);
+    }else if (call.method.equals("stopService")) {
+      stopForegroundService();
+      result.success(true);
+    }
+    else {
       result.notImplemented();
     }
   }
@@ -436,77 +469,88 @@ public class ReleepWatchConnectPlugin
     return 0;
   }
 
-  private int connectWatchBleWithMac(String macAddress) {
-    final int[] res_code = { 0 };
-    YCBTClient.stopScanBle();
-    YCBTClient.connectBle(macAddress, new BleConnectResponse() {
-      @Override
-      public void onConnectResponse(final int code) {
-
-        YCBTLog.e("connectBle code " + code);
-        if (code == Constants.CODE.Code_OK) {
-          baseOrderSet();
-          res_code[0] = code;
-          // syncHealthDataByDataType(Constants.DATATYPE.Health_HistoryHeart);
-          YCBTLog.e("connectBle success ");
-        } else if (code == Constants.CODE.Code_Failed) {
-          YCBTLog.e("connectBle fail ");
-          res_code[0] = code;
-        }
-      }
-    });
-    return res_code[0];
+  public void startForegroundService() {
+    Intent serviceIntent = new Intent(activity.getApplicationContext(), WatchConnectionService.class);
+    ContextCompat.startForegroundService(activity.getApplicationContext(), serviceIntent);
   }
 
-  private void baseOrderSet() {
-    /***
-     * 语言设置
-     * 
-     * @param langType     0x00:English 0x01: Chinese 0x02: Russian 0x03: German
-     *                     0x04:French
-     *                     0x05: Japanese 0x06: Spanish 0x07: Italian 0x08:
-     *                     Portuguese 0x09: Korean
-     *                     0x0A: Polish 0x0B: Malay 0x0C: Traditional Chinese
-     *                     0xFF:other
-     * @param dataResponse
-     */
-    YCBTClient.settingLanguage(0x00, new BleDataResponse() {
-      @Override
-      public void onDataResponse(int i, float v, HashMap hashMap) {
-        android.util.Log.e("device", "同步语言结束");
-      }
-    });
-
-    // 心率采集
-    YCBTClient.settingHeartMonitor(0x01, 10, new BleDataResponse() {
-      @Override
-      public void onDataResponse(int i, float v, HashMap hashMap) {
-        android.util.Log.e("device", "设置10分钟间隔采集心率");
-      }
-    });
-
-    // Heatrate Sync
-    // syncHealthDataByDataType(Constants.DATATYPE.Health_HistoryHeart);
-
-    /*
-     * //无感检测
-     * YCBTClient.settingPpgCollect(0x01, 60, 60, new BleDataResponse() {
-     * 
-     * @Override
-     * public void onDataResponse(int i, float v, HashMap hashMap) {
-     * Log.e("device", "设置无感数据采集");
-     * }
-     * });
-     * 
-     * 
-     * //同步心率
-     * syncHisHr();
-     * //同步睡眠
-     * syncHisSleep();
-     * 
-     * syncHisStep();
-     */
+  public void stopForegroundService() {
+    Context context = activity.getApplicationContext();
+    Intent serviceIntent = new Intent(context, WatchConnectionService.class);
+    context.stopService(serviceIntent);
   }
+
+//  private int connectWatchBleWithMac(String macAddress) {
+//    final int[] res_code = { 0 };
+//    YCBTClient.stopScanBle();
+//    YCBTClient.connectBle(macAddress, new BleConnectResponse() {
+//      @Override
+//      public void onConnectResponse(final int code) {
+//
+//        YCBTLog.e("connectBle code " + code);
+//        if (code == Constants.CODE.Code_OK) {
+//         UtilReleepWatch.baseOrderSet();
+//          res_code[0] = code;
+//          // syncHealthDataByDataType(Constants.DATATYPE.Health_HistoryHeart);
+//          YCBTLog.e("connectBle success ");
+//        } else if (code == Constants.CODE.Code_Failed) {
+//          YCBTLog.e("connectBle fail ");
+//          res_code[0] = code;
+//        }
+//      }
+//    });
+//    return res_code[0];
+//  }
+
+//  private void baseOrderSet() {
+//    /***
+//     * 语言设置
+//     *
+//     * @param langType     0x00:English 0x01: Chinese 0x02: Russian 0x03: German
+//     *                     0x04:French
+//     *                     0x05: Japanese 0x06: Spanish 0x07: Italian 0x08:
+//     *                     Portuguese 0x09: Korean
+//     *                     0x0A: Polish 0x0B: Malay 0x0C: Traditional Chinese
+//     *                     0xFF:other
+//     * @param dataResponse
+//     */
+//    YCBTClient.settingLanguage(0x00, new BleDataResponse() {
+//      @Override
+//      public void onDataResponse(int i, float v, HashMap hashMap) {
+//        android.util.Log.e("device", "同步语言结束");
+//      }
+//    });
+//
+//    // 心率采集
+//    YCBTClient.settingHeartMonitor(0x01, 10, new BleDataResponse() {
+//      @Override
+//      public void onDataResponse(int i, float v, HashMap hashMap) {
+//        android.util.Log.e("device", "设置10分钟间隔采集心率");
+//      }
+//    });
+//
+//    // Heatrate Sync
+//    // syncHealthDataByDataType(Constants.DATATYPE.Health_HistoryHeart);
+//
+//    /*
+//     * //无感检测
+//     * YCBTClient.settingPpgCollect(0x01, 60, 60, new BleDataResponse() {
+//     *
+//     * @Override
+//     * public void onDataResponse(int i, float v, HashMap hashMap) {
+//     * Log.e("device", "设置无感数据采集");
+//     * }
+//     * });
+//     *
+//     *
+//     * //同步心率
+//     * syncHisHr();
+//     * //同步睡眠
+//     * syncHisSleep();
+//     *
+//     * syncHisStep();
+//     */
+//  }
 
 //  private ArrayList syncHealthDataByDataType(int health_historyHeart) {
 //
@@ -533,7 +577,6 @@ public class ReleepWatchConnectPlugin
     channel.setMethodCallHandler(null);
   }
 
-  ArrayList<ScanBLEResponse> listWatch = new ArrayList<ScanBLEResponse>();
   @Override
   public void onListen(Object arguments, EventChannel.EventSink events) {
     if (arguments.equals("scan")) {
