@@ -176,6 +176,7 @@ public class UtilReleepWatch {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
+                    DeleteAllHealthData();
                     android.util.Log.i("saveReleepHealthData", jsonData);
                 } else {
                     if (response.code() == 401) {
@@ -238,7 +239,6 @@ public class UtilReleepWatch {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
-                    DeleteAllHealthData();
                     android.util.Log.i("saveReleepHealthSleep", jsonData);
                 } else {
                     if (response.code() == 401) {
