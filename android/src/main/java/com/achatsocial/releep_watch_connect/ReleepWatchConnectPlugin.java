@@ -447,6 +447,12 @@ public class ReleepWatchConnectPlugin
       stopForegroundService();
       result.success(true);
     }
+    else if (call.method.equals("removeMacAddress")) {
+      SharedPreferences.Editor editor = sharedPref.edit();
+      editor.putString("KEY_BLE_WATCH", "");
+      editor.apply();
+      result.success(true);
+    }
     else {
       result.notImplemented();
     }

@@ -188,4 +188,9 @@ class ReleepWatchConnect {
     var res_mode = await _channel.invokeMethod('stopService');
     return res_mode;
   }
+
+  static Future<bool> removeWatchMacAddress() async {
+    var res_mode = await _channel.invokeMethod('removeMacAddress');
+    return res_mode;
+  }
 }
