@@ -32,6 +32,7 @@ public class WatchConnectionService extends Service {
     String userLoginToken;
     String serverIP;
     int DelayHour = 1000 * 60 * 60;
+    private static boolean isStoppedByApp = false;
 
     @Override
     public void onCreate() {
@@ -45,6 +46,7 @@ public class WatchConnectionService extends Service {
         watchBatt = 0;
         userLoginToken = "";
         serverIP = "";
+        isStoppedByApp = false;
     }
 
     @Override
@@ -156,12 +158,18 @@ public class WatchConnectionService extends Service {
         super.onDestroy();
         mHandler.removeCallbacks(mUpdateNotificationRunnable);
         mWatchHandler.removeCallbacks(mUpdateWatchStatus);
-        Intent broadcastIntent = new Intent(this, RestartServiceBroadcastReceiver.class);
-        sendBroadcast(broadcastIntent);
+        if (!isStoppedByApp) {
+            Intent broadcastIntent = new Intent(this, RestartServiceBroadcastReceiver.class);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public static void setIsStoppedByApp(Boolean status){
+        isStoppedByApp = status;
     }
 }
