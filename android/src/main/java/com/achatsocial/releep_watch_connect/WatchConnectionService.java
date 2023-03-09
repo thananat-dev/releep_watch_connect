@@ -41,8 +41,8 @@ public class WatchConnectionService extends Service {
         mHandler = new Handler();
         mWatchHandler = new Handler();
         mCount = 0;
-        watchMac = "";
-        status = "";
+        watchMac = "Loading...";
+        status = "initial...";
         watchBatt = 0;
         userLoginToken = "";
         serverIP = "";
@@ -56,11 +56,7 @@ public class WatchConnectionService extends Service {
                     NotificationManager.IMPORTANCE_LOW);
             mNotificationManager.createNotificationChannel(channel);
 
-            Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Foreground Service")
-                    .setContentText("Service is running in foreground (0)")
-                    .setSmallIcon(R.drawable.abc_vector_test)
-                    .build();
+            Notification notification = buildNotification();
 
             startForeground(NOTIFICATION_ID, notification);
         } else {
@@ -107,10 +103,18 @@ public class WatchConnectionService extends Service {
                    int code = UtilReleepWatch.connectWatchBleWithMac(watchMac);
                }
             }
+
             mCount++;
             Notification updatedNotification = buildNotification();
             mNotificationManager.notify(NOTIFICATION_ID, updatedNotification);
-            mHandler.postDelayed(this, 10000); // schedule the next update
+            if (mCount == 1082) { // when 3 hour restart service
+                isStoppedByApp = true;
+                YCBTClient.disconnectBle();
+                stopSelf();
+                startService(new Intent(getApplicationContext(), WatchConnectionService.class));
+            } else {
+                mHandler.postDelayed(this, 10000); // schedule the next update
+            }
         }
     };
 
