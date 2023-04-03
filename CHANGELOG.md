@@ -37,3 +37,7 @@
 ## 0.0.3
 
 * add foreground service for android.
+
+## 0.0.3+1
+
+* fix build ios.
