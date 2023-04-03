@@ -1,4 +1,5 @@
 import Flutter
+import BackgroundTasks
 import UIKit
 import YCProductSDK
 import CoreBluetooth
@@ -8,7 +9,8 @@ public var devicesList = [CBPeripheral]()
 
 public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
     
-    
+    var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+    var timer: Timer?
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         // 初始化
@@ -27,10 +29,15 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         
         let eventChannel = FlutterEventChannel(name: "scan_releep_watch", binaryMessenger: registrar.messenger())
         eventChannel.setStreamHandler(SwiftStreamHandler())
+        
+        // Register MyAppBackgroundTask as the app delegate
+        if let appDelegateClass = NSClassFromString("MyAppBackgroundTask") as? NSObject.Type {
+            let appDelegate = appDelegateClass.init() as! UIResponder
+            UIApplication.shared.delegate = appDelegate as? any UIApplicationDelegate
+        }
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
         if call.method == "getPlatformVersion" {
             result("iOS " + UIDevice.current.systemVersion)
         }
@@ -341,11 +348,11 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 }
             }
         }
-         else if call.method == "disconnectReleepWatch" {
+        else if call.method == "disconnectReleepWatch" {
             let device = YCProduct.shared.currentPeripheral
-//            YCProduct.disconnectDevice(device)
-             YCProduct.disconnectDevice(device) { state, _ in
-             }
+            //            YCProduct.disconnectDevice(device)
+            YCProduct.disconnectDevice(device) { state, _ in
+            }
             result(0)
         }
         else if call.method == "getCurrentSystemMode" {
@@ -377,43 +384,43 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "settingHeartMonitor" {
-                    let args = call.arguments as! Dictionary<String, Any>
-                    let time = args["intervalTime"] as! UInt8
-                    YCProduct.setDeviceHeartRateMonitoringMode(isEnable: true, interval: time) { state, response in
-                        if state == .succeed {
-                            print("success")
-                            result(0)
-                        } else {
-                            print("fail")
-                            result(nil)
-                        }
-                    }
+            let args = call.arguments as! Dictionary<String, Any>
+            let time = args["intervalTime"] as! UInt8
+            YCProduct.setDeviceHeartRateMonitoringMode(isEnable: true, interval: time) { state, response in
+                if state == .succeed {
+                    print("success")
+                    result(0)
+                } else {
+                    print("fail")
+                    result(nil)
+                }
+            }
         }
         else if call.method == "settingTemperatureMonitor" {
-                    let args = call.arguments as! Dictionary<String, Any>
-                    let time = args["intervalTime"] as! UInt8
-                    YCProduct.setDeviceTemperatureMonitoringMode(isEnable: true, interval: time) { state, response in
-                                if state == .succeed {
-                                    print("success")
-                                    result(0)
-                                } else {
-                                    print("fail")
-                                    result(nil)
-                                }
-                            }
+            let args = call.arguments as! Dictionary<String, Any>
+            let time = args["intervalTime"] as! UInt8
+            YCProduct.setDeviceTemperatureMonitoringMode(isEnable: true, interval: time) { state, response in
+                if state == .succeed {
+                    print("success")
+                    result(0)
+                } else {
+                    print("fail")
+                    result(nil)
+                }
+            }
         }
         else if call.method == "settingBloodOxygenModeMonitor" {
-                    let args = call.arguments as! Dictionary<String, Any>
-                    let time = args["intervalTime"] as! UInt8
-                    YCProduct.setDeviceBloodOxygenMonitoringMode(isEnable: true, interval: time) { state, response in
-                                if state == .succeed {
-                                            print("success")
-                                            result(0)
-                                        } else {
-                                            print("fail")
-                                            result(nil)
-                                        }
-                                    }
+            let args = call.arguments as! Dictionary<String, Any>
+            let time = args["intervalTime"] as! UInt8
+            YCProduct.setDeviceBloodOxygenMonitoringMode(isEnable: true, interval: time) { state, response in
+                if state == .succeed {
+                    print("success")
+                    result(0)
+                } else {
+                    print("fail")
+                    result(nil)
+                }
+            }
         }
         else if call.method == "settingBloodOxygenAlarm" {
             let args = call.arguments as! Dictionary<String, Any>
@@ -504,6 +511,93 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 }
             }
         }
+        else if(call.method == "startService") {
+           // startService()
+            result(true)
+        } else if(call.method == "stopService") {
+           // stopService()
+            result(true)
+        } else if(call.method == "removeMacAddress") {
+            UserDefaults.standard.set("", forKey: "KEY_BLE_WATCH")
+            result(true)
+        }
+    }
+    
+
+//    private func startService() {
+//        stopService()
+//        let center = UNUserNotificationCenter.current()
+//        center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+//
+//        let content = UNMutableNotificationContent()
+//        content.title = "Foreground Service"
+//        content.body = "Running background task..."
+//
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+//        let request = UNNotificationRequest(identifier: "foreground_service", content: content, trigger: trigger)
+//
+//        center.add(request)
+//
+//        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+//            print("Running background task...")
+//        }
+//    }
+    
+    private func startService() {
+      let center = UNUserNotificationCenter.current()
+      center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+
+      let content = UNMutableNotificationContent()
+      content.title = "Foreground Service"
+      content.body = "Running background task..."
+      
+      // Schedule the initial notification
+      let initialTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+      let initialRequest = UNNotificationRequest(identifier: "foreground_service_init", content: content, trigger: initialTrigger)
+      center.add(initialRequest)
+
+      // Schedule the update notification
+      let updateTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+      let updateRequest = UNNotificationRequest(identifier: "foreground_service_update", content: content, trigger: updateTrigger)
+      center.add(updateRequest)
+
+      // Register for remote notifications
+      let notificationCenter = NotificationCenter.default
+      notificationCenter.addObserver(self, selector: #selector(didReceiveRemoteNotification(_:)), name: Notification.Name("didReceiveRemoteNotification"), object: nil)
+      
+      // Start the timer to execute the task every 60 seconds
+      timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+        // Update the notification content
+        content.body = "Running background task...\nLast updated: \(Date())"
+        let updateRequest = UNNotificationRequest(identifier: "foreground_service_update", content: content, trigger: updateTrigger)
+        center.add(updateRequest)
+
+        // Perform the background task
+        print("Running background task...")
+
+        // Schedule a local notification to update the notification content when the app is minimized
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "Foreground Service"
+        notificationContent.body = "Background task is running..."
+        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let notificationRequest = UNNotificationRequest(identifier: "foreground_service_notification", content: notificationContent, trigger: notificationTrigger)
+        center.add(notificationRequest)
+      }
+    }
+
+    @objc private func didReceiveRemoteNotification(_ notification: Notification) {
+      // This method is called when a remote notification is received
+      // You can perform any background tasks here
+      print("Received remote notification")
+    }
+
+
+    private func stopService() {
+      let center = UNUserNotificationCenter.current()
+      center.removePendingNotificationRequests(withIdentifiers: ["foreground_service"])
+
+      timer?.invalidate()
+      timer = nil
     }
     
     
@@ -563,5 +657,7 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
         }
         return String(data: data, encoding: String.Encoding.utf8)
     }
+    
+   
     
 }

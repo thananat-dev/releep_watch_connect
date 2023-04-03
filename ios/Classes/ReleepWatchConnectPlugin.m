@@ -11,5 +11,6 @@
 @implementation ReleepWatchConnectPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   [SwiftReleepWatchConnectPlugin registerWithRegistrar:registrar];
+    
 }
 @end
