@@ -43,8 +43,9 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         }
         else if call.method == "connectReleepWatch"{
             let args = call.arguments as? Dictionary<String, Any>
-            let macAddress = args?["releepWatchMac"] as? String
-            let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
+            let _macAddress = args?["releepWatchMac"] as? String
+            let _uuidString = args?["releepUUIDString"] as? String
+            let index = devicesList.firstIndex(where: { $0.macAddress == _macAddress || $0.identifier.uuidString == _uuidString})
             if index != nil {
                 let device = devicesList[index ?? 0]
                 
@@ -65,7 +66,10 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                     YCProduct.scanningDevice { devices, error in
                         var _ : [ScanBLEResponse] = [ScanBLEResponse]()
                         devicesList = devices
-                        let index = devicesList.firstIndex(where: { $0.macAddress == macAddress })
+                        for device in devices {
+                            print(device.name ?? "", device.macAddress, device.identifier.uuidString)
+                        }
+                        let index = devicesList.firstIndex(where: { $0.macAddress == _macAddress || $0.identifier.uuidString == _uuidString})
                         if index != nil {
                             let device = devicesList[index ?? 0]
                             
@@ -106,7 +110,13 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                 result(3)
             }
             else{
-                result(6)
+                YCProduct.connectDevice(device!) { state, error in
+                if state == .connected {
+                print("connected")
+                }
+                    result(state.rawValue)
+                }
+                
             }
         }
         else if call.method == "settingTime" {
@@ -349,9 +359,16 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
             }
         }
         else if call.method == "disconnectReleepWatch" {
-            let device = YCProduct.shared.currentPeripheral
             //            YCProduct.disconnectDevice(device)
-            YCProduct.disconnectDevice(device) { state, _ in
+            YCProduct.scanningDevice { devices, error in
+                var _ : [ScanBLEResponse] = [ScanBLEResponse]()
+                devicesList = devices
+                for device in devices {
+                    print(device.name ?? "", device.macAddress)
+                    YCProduct.disconnectDevice(device) { state, _ in
+                        print(state.rawValue)
+                    }
+                }
             }
             result(0)
         }
@@ -622,8 +639,8 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
                 var scanBLEResponse : [ScanBLEResponse] = [ScanBLEResponse]()
                 devicesList = devices
                 for device in devices {
-                    print(device.name ?? "", device.macAddress)
-                    let BLEObject : ScanBLEResponse = ScanBLEResponse(deviceName: device.name ?? "", macAddress:device.macAddress)
+                    print(device.name ?? "", device.macAddress, device.identifier.uuidString)
+                    let BLEObject : ScanBLEResponse = ScanBLEResponse(deviceName: device.name ?? "", macAddress:device.macAddress,uuidString: device.identifier.uuidString)
                     scanBLEResponse.append(BLEObject)
                     
                 }

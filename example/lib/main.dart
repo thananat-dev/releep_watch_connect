@@ -53,10 +53,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<Null> _connectReleepWatch(watchMac) async {
-    int code = await ReleepWatchConnect.connectWatch(watchMac);
+  Future<Null> _connectReleepWatch(watchMac, uuidStr) async {
+    int code =
+        await ReleepWatchConnect.connectWatch(watchMac, uuidString: uuidStr);
     _cancelWatchScan();
     debugPrint("connect Res ${code}");
+    setState(() {
+      _resReleepWatch.text = code.toString();
+    });
+  }
+
+  Future<Null> _disconnectReleepWatch() async {
+    int code = await ReleepWatchConnect.disconectReleepWatch();
+    debugPrint("disconnect Res ${code}");
     setState(() {
       _resReleepWatch.text = code.toString();
     });
@@ -342,6 +351,14 @@ class _MyAppState extends State<MyApp> {
                         onPressed: () => _getConnectState(),
                         child: const Text("Connect State")),
                     ElevatedButton(
+                        onPressed: () => _connectReleepWatch(
+                            "C0:AB:61:18:5B:22",
+                            "CCEE2AF2-36D8-8DE2-8F2F-34F11801250B"),
+                        child: const Text("Connect E66")),
+                    ElevatedButton(
+                        onPressed: () => _disconnectReleepWatch(),
+                        child: const Text("Disconnect")),
+                    ElevatedButton(
                         onPressed: () =>
                             ReleepWatchConnect.startForegroundTask(),
                         child: const Text("startTask")),
@@ -368,10 +385,13 @@ class _MyAppState extends State<MyApp> {
                     return ListTile(
                       title: Text('${_listWatch[index]['DeviceName']}' +
                           ' | ' +
-                          '${_listWatch[index]['MacAddress']}'),
+                          '${_listWatch[index]['MacAddress']}' +
+                          ' ' +
+                          '${_listWatch[index]['UUIDString'] ?? ""}'),
                       onTap: () => {
                         _connectReleepWatch(
-                            '${_listWatch[index]['MacAddress']}'),
+                            '${_listWatch[index]['MacAddress']}',
+                            '${_listWatch[index]['UUIDString'] ?? ""}'),
                       },
                     );
                   },

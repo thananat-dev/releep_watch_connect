@@ -24,10 +24,10 @@ class ReleepWatchConnect {
     return code;
   }
 
-  static Future<int> connectWatch(macAddress) async {
+  static Future<int> connectWatch(macAddress, {uuidString = ""}) async {
     // code : 0 = OK 1 = Fail 2 = Time out
-    final int code = await _channel
-        .invokeMethod('connectReleepWatch', {'releepWatchMac': macAddress});
+    final int code = await _channel.invokeMethod('connectReleepWatch',
+        {'releepWatchMac': macAddress, 'releepUUIDString': uuidString});
     return code;
   }
 
