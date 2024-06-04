@@ -90,6 +90,30 @@ class ReleepWatchConnect {
     return dataECG;
   }
 
+
+
+  //New Sport
+  static Future<dynamic> syncRunIndoors() async {
+    var dataRunIndoors = await _channel.invokeMethod('syncRunIndoors');
+    return dataRunIndoors;
+  }
+
+  static Future<dynamic> syncRUN() async {
+    var dataRun = await _channel.invokeMethod('syncRUN');
+    return dataRun;
+  }
+
+  static Future<dynamic> syncFitness() async {
+    var dataFitness = await _channel.invokeMethod('syncFitness');
+    return dataFitness;
+  }
+
+  static Future<dynamic> syncRunOutSide() async {
+    var dataRunOutSid = await _channel.invokeMethod('syncRunOutSide');
+    return dataRunOutSid;
+  }
+
+
   static Future<dynamic> getCurrentSystemMode() async {
     //0x00: Normal working mode 0x01: Caring working mode 0x02: Power saving working mode 0x03: Custom working mode
     var mode = await _channel.invokeMethod('getCurrentSystemMode');

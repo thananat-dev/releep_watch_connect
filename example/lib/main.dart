@@ -8,7 +8,14 @@ import 'package:releep_watch_connect/releep_watch_connect.dart';
 import 'package:releep_watch_connect/util_releep_watch.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MaterialApp(
+      home: MyApp(),
+      routes: <String, WidgetBuilder>{
+        '/Fitness': (BuildContext context) => new FitnessPage(),
+      },
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -82,6 +89,23 @@ class _MyAppState extends State<MyApp> {
   Future<Null> _syncHealthStep() async {
     var res = await ReleepWatchConnect.syncHealthStep();
     debugPrint("_syncHealthStep --> Step ${res.toString()}");
+    setState(() {
+      _resReleepWatch.text = res.toString();
+    });
+  }
+
+  //Sport
+  Future<Null> _syncSportRun() async {
+    var res = await ReleepWatchConnect.syncRUN();
+    debugPrint("_syncHealthStep --> Run ${res.toString()}");
+    setState(() {
+      _resReleepWatch.text = res.toString();
+    });
+  }
+
+  Future<Null> _syncSportFitness() async {
+    var res = await ReleepWatchConnect.syncFitness();
+    debugPrint("_syncHealthStep --> Fitness ${res.toString()}");
     setState(() {
       _resReleepWatch.text = res.toString();
     });
@@ -363,9 +387,21 @@ class _MyAppState extends State<MyApp> {
                             ReleepWatchConnect.startForegroundTask(),
                         child: const Text("startTask")),
                     ElevatedButton(
+                        onPressed: () => ReleepWatchConnect.syncFitness(),
+                        child: const Text("syncFitness")),
+                    ElevatedButton(
+                        onPressed: () => ReleepWatchConnect.syncRUN(),
+                        child: const Text("syncRUN")),
+                    ElevatedButton(
+                        onPressed: () => ReleepWatchConnect.syncRunIndoors(),
+                        child: const Text("syncRunIndoors")),
+                    ElevatedButton(
+                        onPressed: () => ReleepWatchConnect.syncRunOutSide(),
+                        child: const Text("syncRunOutSide")),
+                    ElevatedButton(
                         onPressed: () =>
-                            ReleepWatchConnect.stopForegroundTask(),
-                        child: const Text("stopTask")),
+                            Navigator.of(context).pushNamed('/Fitness'),
+                        child: const Text("ไปยังหน้าออกกำลังกาย")),
                   ],
                 ),
                 Wrap(
@@ -405,5 +441,31 @@ class _MyAppState extends State<MyApp> {
             child: const Icon(Icons.search),
           )),
     );
+  }
+}
+
+class FitnessPage extends StatefulWidget {
+  FitnessPage({Key? key}) : super(key: key);
+
+  @override
+  State<FitnessPage> createState() => _FitnessPageState();
+}
+
+class _FitnessPageState extends State<FitnessPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("ออกกำลังกาย"),
+        ),
+        floatingActionButton: SizedBox(
+          width: 90,
+          height: 90,
+          child: FloatingActionButton(
+            backgroundColor: Colors.green,
+            onPressed: () {},
+            child: const Icon(Icons.play_arrow,size: 60),
+          ),
+        ));
   }
 }

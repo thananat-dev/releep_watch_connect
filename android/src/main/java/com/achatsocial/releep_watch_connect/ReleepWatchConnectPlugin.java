@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
@@ -19,12 +21,14 @@ import com.yucheng.ycbtsdk.bean.ScanDeviceBean;
 import com.yucheng.ycbtsdk.response.BleConnectResponse;
 import com.yucheng.ycbtsdk.response.BleDataResponse;
 import com.yucheng.ycbtsdk.response.BleDeviceToAppDataResponse;
+import com.yucheng.ycbtsdk.response.BleRealDataResponse;
 import com.yucheng.ycbtsdk.response.BleScanResponse;
 import com.yucheng.ycbtsdk.utils.YCBTLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivity;
@@ -197,7 +201,20 @@ public class ReleepWatchConnectPlugin
       });
     }else if (call.method.equals("syncStep")) {
 
-      YCBTClient.healthHistoryData(Constants.DATATYPE.GetNowStep, new BleDataResponse() {
+//      YCBTClient.healthHistoryData(Constants.DATATYPE.GetNowStep, new BleDataResponse() {
+//        @Override
+//        public void onDataResponse(int i, float v, HashMap hashMap) {
+//          if (hashMap != null) {
+//            HashMap stepData = hashMap;
+//            android.util.Log.e("syncStep", "hashMap=" + hashMap.toString());
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+//          } else {
+//            android.util.Log.e("syncStep", "no ..step..data....");
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+//          }
+//        }
+//      });
+      YCBTClient.appRealSportFromDevice(Constants.DATATYPE.GetNowStep, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
           if (hashMap != null) {
@@ -207,19 +224,90 @@ public class ReleepWatchConnectPlugin
           } else {
             android.util.Log.e("syncStep", "no ..step..data....");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+          }
+        }
+      });
 
+      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
+        @Override
+        public void onRealDataResponse(int i, HashMap hashMap) {
+          if (i == Constants.DATATYPE.Real_UploadSport) { if (hashMap != null && hashMap.size() > 0) {
+             hashMap.get("sportStep");//step count sportDistance = (int) hashMap.get("sportDistance");//distance sportCalorie = (int) hashMap.get("sportCalorie");//calories
+          } }
+        } });
+
+    }else if (call.method.equals("syncFitness")) {
+
+      YCBTClient.appRealSportFromDevice(Constants.SportType.FITNESS, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (hashMap != null) {
+            HashMap stepData = hashMap;
+            android.util.Log.e("syncFitness", "hashMap=" + hashMap.toString());
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+          } else {
+            android.util.Log.e("syncFitness", "no ..step..data....");
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+          }
+        }
+      });
+    }else if (call.method.equals("syncRUN")) {
+
+      YCBTClient.appRealSportFromDevice(Constants.SportType.RUN, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (hashMap != null) {
+            HashMap stepData = hashMap;
+            android.util.Log.e("syncRUN", "hashMap=" + hashMap.toString());
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+          } else {
+            android.util.Log.e("syncRUN", "no ..step..data....");
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+          }
+        }
+      });
+    }else if (call.method.equals("syncRunIndoors")) {
+
+      YCBTClient.appRealSportFromDevice(Constants.SportType.RUN_INDOORS, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (hashMap != null) {
+            HashMap stepData = hashMap;
+            android.util.Log.e("syncRunIndoors", "hashMap=" + hashMap.toString());
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+          } else {
+            android.util.Log.e("syncRunIndoors", "no ..step..data....");
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+          }
+        }
+      });
+    }else if (call.method.equals("syncRunOutSide")) {
+      YCBTClient.appRealSportFromDevice(Constants.SportType.RUN_OUTSIDE, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+          if (hashMap != null) {
+            HashMap stepData = hashMap;
+            android.util.Log.e("syncRunOutSide", "hashMap=" + hashMap.toString());
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+          } else {
+            android.util.Log.e("syncRunOutSide", "no ..step..data....");
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
           }
         }
       });
     }else if (call.method.equals("syncSport")) {
+      ArrayList listSportTest = new ArrayList();
 
       YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySport, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
           if (hashMap != null) {
+            android.util.Log.e("test",  listSportTest.toString());
             HashMap sportData = hashMap;
             android.util.Log.e("syncSport", "hashMap=" + hashMap.toString());
-            new Handler(Looper.getMainLooper()).post(() -> { result.success(sportData); });
+            new Handler(Looper.getMainLooper()).post(() -> {
+              result.success(sportData);
+            });
           } else {
             android.util.Log.e("syncSport", "no ..sport..data....");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
