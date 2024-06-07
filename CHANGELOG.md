@@ -41,3 +41,7 @@
 ## 0.0.3+1
 
 * fix build ios.
+
+## 0.0.4
+
+* add new sdk for support e800 model.
