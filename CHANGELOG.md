@@ -46,6 +46,6 @@
 
 * add new sdk for support e800 model.
 
-## 0.0.4+1
+## 0.0.5
 
 * fix sync sleep.
