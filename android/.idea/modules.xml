@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/releep_watch_connect.iml" filepath="$PROJECT_DIR$/.idea/releep_watch_connect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/releep_watch_connect.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/releep_watch_connect.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/releep_watch_connect.main.iml" filepath="$PROJECT_DIR$/.idea/modules/releep_watch_connect.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/releep_watch_connect.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/releep_watch_connect.unitTest.iml" />
+    </modules>
+  </component>
+</project>

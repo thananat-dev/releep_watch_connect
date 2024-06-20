@@ -113,6 +113,16 @@ class ReleepWatchConnect {
     return dataRunOutSid;
   }
 
+  static Future<dynamic> startSport({required bool isStop}) async {
+    var startSport = await _channel.invokeMethod('startSport',  {'isStop': isStop,});
+    return startSport;
+  }
+
+  static Future<dynamic> stopSport() async {
+    var stopSport = await _channel.invokeMethod('stopSport');
+    return stopSport;
+  }
+
 
   static Future<dynamic> getCurrentSystemMode() async {
     //0x00: Normal working mode 0x01: Caring working mode 0x02: Power saving working mode 0x03: Custom working mode

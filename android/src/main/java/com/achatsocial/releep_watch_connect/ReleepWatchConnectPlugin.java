@@ -58,6 +58,7 @@ public class ReleepWatchConnectPlugin
   private List<String> listVal = new ArrayList<>();
   ArrayList<ScanBLEResponse> listWatch = new ArrayList<ScanBLEResponse>();
   private Gson gson = new Gson();
+  boolean  isStop = false;
 
   private String[] permissionArray = new String[] {
       Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -116,7 +117,6 @@ public class ReleepWatchConnectPlugin
       if (bleState == Constants.BLEState.ReadWriteOK){  //Connected successfully
         android.util.Log.e("BLEState", "Connected");
       }
-
       result.success(bleState);
     } else if (call.method.equals("settingTime")) {
       String timeNow = call.argument("timeNow");
@@ -171,6 +171,7 @@ public class ReleepWatchConnectPlugin
       });
     } else if (call.method.equals("syncSPO2")) {
       ArrayList lists = new ArrayList();
+
       YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistoryBloodOxygen, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
@@ -220,20 +221,27 @@ public class ReleepWatchConnectPlugin
           if (hashMap != null) {
             HashMap stepData = hashMap;
             android.util.Log.e("syncStep", "hashMap=" + hashMap.toString());
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
+          } else {
+            android.util.Log.e("syncStep", "no ..step..data....");
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+          }
+        }
+      });
+      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
+        @Override
+        public void onRealDataResponse(int i, HashMap hashMap) {
+//          if (i == Constants.DATATYPE.Real_UploadSport) { if (hashMap != null && hashMap.size() > 0) {
+//             hashMap.get("sportStep");//step count sportDistance = (int) hashMap.get("sportDistance");//distance sportCalorie = (int) hashMap.get("sportCalorie");//calories
+//          } }
+          if (hashMap != null) {
+            HashMap stepData = hashMap;
+            android.util.Log.e("syncStep", "hashMap=" + hashMap.toString());
             new Handler(Looper.getMainLooper()).post(() -> { result.success(stepData); });
           } else {
             android.util.Log.e("syncStep", "no ..step..data....");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
           }
-        }
-      });
-
-      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
-        @Override
-        public void onRealDataResponse(int i, HashMap hashMap) {
-          if (i == Constants.DATATYPE.Real_UploadSport) { if (hashMap != null && hashMap.size() > 0) {
-             hashMap.get("sportStep");//step count sportDistance = (int) hashMap.get("sportDistance");//distance sportCalorie = (int) hashMap.get("sportCalorie");//calories
-          } }
         } });
 
     }else if (call.method.equals("syncFitness")) {
@@ -249,6 +257,45 @@ public class ReleepWatchConnectPlugin
             android.util.Log.e("syncFitness", "no ..step..data....");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
           }
+        }
+      });
+    }else if (call.method.equals("startSport")) {
+      isStop = false;
+      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
+        @Override
+        public void onRealDataResponse(int dataType, HashMap dataMap) {
+
+          if(Boolean.TRUE.equals(isStop)){
+            if (dataMap != null ) {
+              HashMap startSport = dataMap;
+              new Handler(Looper.getMainLooper()).post(() -> { result.success(startSport);
+              });
+            } else {
+              android.util.Log.e("syncFitness", "no ..step..data....");
+              new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+            }
+          }
+          android.util.Log.d("mainactivity","chong-------" + dataMap.toString());
+        }
+      });
+      YCBTClient.appRunMode(Constants.SportState.Start, Constants.SportType.RUN, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int code, float ratio, HashMap resultMap) {
+          if (code == 0) {
+            android.util.Log.d("mainactivity","chong------开启成功");
+          }
+        }
+      });
+    }else if (call.method.equals("stopSport")) {
+      isStop = true;
+      YCBTClient.appRunModeEnd( Constants.SportState.Stop, new BleDataResponse() {
+        @Override
+        public void onDataResponse(int i, float v, HashMap hashMap) {
+//          if (hashMap != null) {
+//            HashMap stopSport = hashMap;
+//          } else {
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+//          }
         }
       });
     }else if (call.method.equals("syncRUN")) {
@@ -317,19 +364,35 @@ public class ReleepWatchConnectPlugin
     }
     else if (call.method.equals("syncSleep")) {
       ArrayList lists = new ArrayList();
-      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySleep, new BleDataResponse() {
+
+      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySport, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
           if (hashMap != null) {
             lists.addAll((ArrayList) hashMap.get("data"));
             android.util.Log.e("syncSleep", "hashMap=" + hashMap.toString());
             new Handler(Looper.getMainLooper()).post(() -> { result.success(lists); });
-          } else {
+          }else {
             android.util.Log.e("syncSleep", "no ..sleep..data....");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
           }
         }
       });
+
+
+//      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySleep, new BleDataResponse() {
+//        @Override
+//        public void onDataResponse(int i, float v, HashMap hashMap) {
+//          if (hashMap != null) {
+//            lists.addAll((ArrayList) hashMap.get("data"));
+//            android.util.Log.e("syncSleep", "hashMap=" + hashMap.toString());
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(lists); });
+//          } else {
+//            android.util.Log.e("syncSleep", "no ..sleep..data....");
+//            new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+//          }
+//        }
+//      });
     }else if (call.method.equals("syncECG")) {
       YCBTClient.collectHistoryListData(0x00, new BleDataResponse() {
         @Override
@@ -355,10 +418,8 @@ public class ReleepWatchConnectPlugin
 //0x00: Normal working mode 0x01: Caring working mode 0x02: Power saving working mode 0x03: Custom working mode
             int currentSystemWorkingMode = (int) hashMap.get("currentSystemWorkingMode");
             new Handler(Looper.getMainLooper()).post(() -> { result.success(currentSystemWorkingMode); });
-          }
-          else {
+          }else {
             new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
-
           }
         }
       });
@@ -726,6 +787,8 @@ public class ReleepWatchConnectPlugin
   public void onCancel(Object arguments) {
 
   }
+
+
 
   boolean isActiveDisconnect = false;
   BleConnectResponse bleConnectResponse = new BleConnectResponse() {

@@ -452,19 +452,46 @@ class FitnessPage extends StatefulWidget {
 }
 
 class _FitnessPageState extends State<FitnessPage> {
+  bool isStart = false;
+  String text = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text("ออกกำลังกาย"),
         ),
+        body: Text(text),
         floatingActionButton: SizedBox(
           width: 90,
           height: 90,
           child: FloatingActionButton(
             backgroundColor: Colors.green,
-            onPressed: () {},
-            child: const Icon(Icons.play_arrow,size: 60),
+            onPressed: () async {
+              try{
+                if (!isStart) {
+                  setState(() {
+                    isStart = true;
+                    text = "";
+                  });
+                  var res = await ReleepWatchConnect.startSport(isStop: false);
+                  if (res != null) {
+                    text = res.toString();
+                    setState(() {
+                      isStart = false;
+                    });
+                  }
+                } else {
+                  var res = await ReleepWatchConnect.stopSport();
+
+                }
+              }catch(e){
+                setState(() {
+                  isStart = false;
+                });
+              }
+
+            },
+            child: Icon(isStart ? Icons.stop : Icons.play_arrow, size: 60),
           ),
         ));
   }
