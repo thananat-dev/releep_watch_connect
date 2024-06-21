@@ -113,8 +113,8 @@ class ReleepWatchConnect {
     return dataRunOutSid;
   }
 
-  static Future<dynamic> startSport({required bool isStop}) async {
-    var startSport = await _channel.invokeMethod('startSport',  {'isStop': isStop,});
+  static Future<dynamic> startSport({required int typeSport}) async {
+    var startSport = await _channel.invokeMethod('startSport',  {'typeSport': typeSport,});
     return startSport;
   }
 

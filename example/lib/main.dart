@@ -473,7 +473,7 @@ class _FitnessPageState extends State<FitnessPage> {
                     isStart = true;
                     text = "";
                   });
-                  var res = await ReleepWatchConnect.startSport(isStop: false);
+                  var res = await ReleepWatchConnect.startSport(typeSport: SportType.RIDE);
                   if (res != null) {
                     text = res.toString();
                     setState(() {
@@ -495,4 +495,46 @@ class _FitnessPageState extends State<FitnessPage> {
           ),
         ));
   }
+}
+
+
+class SportType {
+  static const int RESERVED = 0;
+  static const int RUN = 1;
+  static const int SWIMMING = 2;
+  static const int RIDE = 3;
+  static const int FITNESS = 4;
+  static const int SCRAP = 5;
+  static const int SKIPPING_ROPE = 6;
+  static const int BASKETBALL = 7;
+  static const int WALKING = 8;
+  static const int BADMINTON = 9;
+  static const int FOOTBALL = 10;
+  static const int MOUNTAINEERING = 11;
+  static const int PING_PONG = 12;
+  static const int FREE_MODE = 13;
+  static const int RUN_INDOORS = 14;
+  static const int RUN_OUTSIDE = 15;
+  static const int WALK_OUTDOOR = 16;
+  static const int WALK_INDOOR = 17;
+  static const int WALK_AND_RUN = 18;
+  static const int INDOOR_CYCLING = 19;
+  static const int STEPPER = 20;
+  static const int ROWING_MACHINE = 21;
+  static const int REAL_TIME_MODE = 22;
+  static const int SIT_UPS = 23;
+  static const int LEAPING_MOTION = 24;
+  static const int WEIGHT_TRAINING = 25;
+  static const int YOGA = 26;
+  static const int ONFOOT = 27;
+  static const int VOLLEYBALL = 28;
+  static const int KAYAK = 29;
+  static const int ROLLER_SKATING = 30;
+  static const int TENNIS = 31;
+  static const int GOLF = 32;
+  static const int ELLIPTICAL_MACHINE = 33;
+  static const int DANCE = 34;
+  static const int ROCK_CLIMBING = 35;
+  static const int AEROBICS = 36;
+  static const int OTHERSPORTS = 37;
 }

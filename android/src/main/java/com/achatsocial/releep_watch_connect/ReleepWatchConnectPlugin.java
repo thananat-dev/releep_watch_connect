@@ -4,17 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.yucheng.ycbtsdk.Constants;
 import com.yucheng.ycbtsdk.YCBTClient;
 import com.yucheng.ycbtsdk.bean.ScanDeviceBean;
@@ -23,19 +20,18 @@ import com.yucheng.ycbtsdk.response.BleDataResponse;
 import com.yucheng.ycbtsdk.response.BleDeviceToAppDataResponse;
 import com.yucheng.ycbtsdk.response.BleRealDataResponse;
 import com.yucheng.ycbtsdk.response.BleScanResponse;
-import com.yucheng.ycbtsdk.utils.YCBTLog;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import io.flutter.Log;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -260,13 +256,15 @@ public class ReleepWatchConnectPlugin
         }
       });
     }else if (call.method.equals("startSport")) {
+
       isStop = false;
+      int typeSport = call.argument("typeSport");
       YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
         @Override
         public void onRealDataResponse(int dataType, HashMap dataMap) {
-
           if(Boolean.TRUE.equals(isStop)){
             if (dataMap != null ) {
+              isStop = false;
               HashMap startSport = dataMap;
               new Handler(Looper.getMainLooper()).post(() -> { result.success(startSport);
               });
@@ -278,7 +276,7 @@ public class ReleepWatchConnectPlugin
           android.util.Log.d("mainactivity","chong-------" + dataMap.toString());
         }
       });
-      YCBTClient.appRunMode(Constants.SportState.Start, Constants.SportType.RUN, new BleDataResponse() {
+      YCBTClient.appRunMode(Constants.SportState.Start, typeSport, new BleDataResponse() {
         @Override
         public void onDataResponse(int code, float ratio, HashMap resultMap) {
           if (code == 0) {
@@ -288,7 +286,7 @@ public class ReleepWatchConnectPlugin
       });
     }else if (call.method.equals("stopSport")) {
       isStop = true;
-      YCBTClient.appRunModeEnd( Constants.SportState.Stop, new BleDataResponse() {
+      YCBTClient.appRunModeEnd(Constants.SportState.Stop, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
 //          if (hashMap != null) {
@@ -365,7 +363,7 @@ public class ReleepWatchConnectPlugin
     else if (call.method.equals("syncSleep")) {
       ArrayList lists = new ArrayList();
 
-      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySport, new BleDataResponse() {
+      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistorySleep, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
           if (hashMap != null) {

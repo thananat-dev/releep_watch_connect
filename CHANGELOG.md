@@ -49,3 +49,7 @@
 ## 0.0.5
 
 * fix sync sleep.
+
+## 0.0.6
+
+* fix sync sport.
