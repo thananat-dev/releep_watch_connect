@@ -257,36 +257,38 @@ public class ReleepWatchConnectPlugin
       });
     }else if (call.method.equals("startSport")) {
 
-      isStop = false;
+//      isStop = false;
       int typeSport = call.argument("typeSport");
-      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
-        @Override
-        public void onRealDataResponse(int dataType, HashMap dataMap) {
-          if(Boolean.TRUE.equals(isStop)){
-            if (dataMap != null ) {
-              isStop = false;
-              HashMap startSport = dataMap;
-              new Handler(Looper.getMainLooper()).post(() -> { result.success(startSport);
-              });
-            } else {
-              android.util.Log.e("syncFitness", "no ..step..data....");
-              new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
-            }
-          }
-          android.util.Log.d("mainactivity","chong-------" + dataMap.toString());
-        }
-      });
+//      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
+//        @Override
+//        public void onRealDataResponse(int dataType, HashMap dataMap) {
+//          if(Boolean.TRUE.equals(isStop)){
+//            if (dataMap != null ) {
+//              isStop = false;
+//              HashMap startSport = dataMap;
+//              new Handler(Looper.getMainLooper()).post(() -> { result.success(startSport);
+//              });
+//            } else {
+//              android.util.Log.e("syncFitness", "no ..step..data....");
+//              new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
+//            }
+//          }
+//          android.util.Log.d("mainactivity","chong-------" + dataMap.toString());
+//        }
+//      });
       YCBTClient.appRunMode(Constants.SportState.Start, typeSport, new BleDataResponse() {
         @Override
         public void onDataResponse(int code, float ratio, HashMap resultMap) {
           if (code == 0) {
             android.util.Log.d("mainactivity","chong------开启成功");
+            new Handler(Looper.getMainLooper()).post(() -> { result.success(0); });
           }
         }
       });
     }else if (call.method.equals("stopSport")) {
       isStop = true;
-      YCBTClient.appRunModeEnd(Constants.SportState.Stop, new BleDataResponse() {
+      int typeSport = call.argument("typeSport");
+      YCBTClient.appRunMode(Constants.SportState.Stop,typeSport, new BleDataResponse() {
         @Override
         public void onDataResponse(int i, float v, HashMap hashMap) {
 //          if (hashMap != null) {
@@ -757,6 +759,16 @@ public class ReleepWatchConnectPlugin
           }
         }
       }, 6);
+    }
+
+    if(arguments.equals("sportStart")){
+      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
+        @Override
+        public void onRealDataResponse(int dataType, HashMap dataMap) {
+          HashMap startSport = dataMap;
+          new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport); });
+        }
+      });
     }
 //    if(arguments.equals("sync")){
 //      List<Object> lists = new ArrayList<>();

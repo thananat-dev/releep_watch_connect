@@ -53,3 +53,7 @@
 ## 0.0.6
 
 * fix sync sport.
+
+## 0.0.7
+
+* fix bug sport.

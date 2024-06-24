@@ -454,6 +454,8 @@ class FitnessPage extends StatefulWidget {
 class _FitnessPageState extends State<FitnessPage> {
   bool isStart = false;
   String text = "";
+
+  late StreamSubscription _ReleepWatchSportubscription;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -467,33 +469,43 @@ class _FitnessPageState extends State<FitnessPage> {
           child: FloatingActionButton(
             backgroundColor: Colors.green,
             onPressed: () async {
-              try{
+
                 if (!isStart) {
                   setState(() {
                     isStart = true;
                     text = "";
                   });
-                  var res = await ReleepWatchConnect.startSport(typeSport: SportType.RIDE);
-                  if (res != null) {
-                    text = res.toString();
+                  var res = await ReleepWatchConnect.startSport(typeSport: SportType.RUN);
+                  _ReleepWatchSportubscription =
+                      ReleepWatchConnect.sportStartResponse.listen((event) => {
+                        setState(() {
+                          text = event.toString();
+                          print(text);
+                        })
+                      });
+                  // if (res != null) {
+                  //   text = res.toString();
+                  //   setState(() {
+                  //     isStart = false;
+                  //   });
+                  // }
+                } else {
+                  _cancelWatchSport();
                     setState(() {
                       isStart = false;
                     });
-                  }
-                } else {
-                  var res = await ReleepWatchConnect.stopSport();
+                  ReleepWatchConnect.stopSport(typeSport: SportType.RUN);
+
 
                 }
-              }catch(e){
-                setState(() {
-                  isStart = false;
-                });
-              }
-
             },
             child: Icon(isStart ? Icons.stop : Icons.play_arrow, size: 60),
           ),
         ));
+  }
+
+  void _cancelWatchSport() {
+    _ReleepWatchSportubscription.cancel();
   }
 }
 

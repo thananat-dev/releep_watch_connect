@@ -118,8 +118,8 @@ class ReleepWatchConnect {
     return startSport;
   }
 
-  static Future<dynamic> stopSport() async {
-    var stopSport = await _channel.invokeMethod('stopSport');
+  static Future<dynamic> stopSport({required int typeSport}) async {
+    var stopSport = await _channel.invokeMethod('stopSport',{'typeSport': typeSport,});
     return stopSport;
   }
 
@@ -210,6 +210,8 @@ class ReleepWatchConnect {
   }
 
   static Stream get scanReleepWatch => stream.receiveBroadcastStream("scan");
+
+  static Stream get sportStartResponse => stream.receiveBroadcastStream("sportStart");
 
   //static Stream get syncReleepWatch => stream.receiveBroadcastStream("sync");
 
