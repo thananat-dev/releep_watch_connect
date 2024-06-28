@@ -211,7 +211,11 @@ class ReleepWatchConnect {
 
   static Stream get scanReleepWatch => stream.receiveBroadcastStream("scan");
 
+  static Stream get deviceToAppSport => stream.receiveBroadcastStream("deviceToApp");
+
   static Stream get sportStartResponse => stream.receiveBroadcastStream("sportStart");
+
+
 
   //static Stream get syncReleepWatch => stream.receiveBroadcastStream("sync");
 

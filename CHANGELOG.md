@@ -57,3 +57,7 @@
 ## 0.0.7
 
 * fix bug sport.
+
+## 0.0.8
+
+* fix sport action from watch.

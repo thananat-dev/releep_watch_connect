@@ -456,6 +456,29 @@ class _FitnessPageState extends State<FitnessPage> {
   String text = "";
 
   late StreamSubscription _ReleepWatchSportubscription;
+  late StreamSubscription _ReleepWatchTodeviceSportubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    callBackDevice();
+  }
+
+
+  callBackDevice(){
+    // _ReleepWatchTodeviceSportubscription =
+    //     ReleepWatchConnect.deviceToAppSport.listen((event) {
+    //       if(event == 0){
+    //         // _cancelWatchSport();
+    //         setState(() {
+    //          text = "";
+    //         });
+    //       }
+    //     });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -469,35 +492,34 @@ class _FitnessPageState extends State<FitnessPage> {
           child: FloatingActionButton(
             backgroundColor: Colors.green,
             onPressed: () async {
+              if (!isStart) {
+                setState(() {
+                  isStart = true;
+                  text = "";
+                });
+                var res = await ReleepWatchConnect.startSport(
+                    typeSport: SportType.RUN);
+                _ReleepWatchSportubscription =
+                    ReleepWatchConnect.sportStartResponse.listen((event) => {
+                          setState(() {
+                            text = event.toString();
+                            print(text);
+                          })
+                        });
 
-                if (!isStart) {
-                  setState(() {
-                    isStart = true;
-                    text = "";
-                  });
-                  var res = await ReleepWatchConnect.startSport(typeSport: SportType.RUN);
-                  _ReleepWatchSportubscription =
-                      ReleepWatchConnect.sportStartResponse.listen((event) => {
-                        setState(() {
-                          text = event.toString();
-                          print(text);
-                        })
-                      });
-                  // if (res != null) {
-                  //   text = res.toString();
-                  //   setState(() {
-                  //     isStart = false;
-                  //   });
-                  // }
-                } else {
-                  _cancelWatchSport();
-                    setState(() {
-                      isStart = false;
-                    });
-                  ReleepWatchConnect.stopSport(typeSport: SportType.RUN);
-
-
-                }
+                // if (res != null) {
+                //   text = res.toString();
+                //   setState(() {
+                //     isStart = false;
+                //   });
+                // }
+              } else {
+                _cancelWatchSport();
+                setState(() {
+                  isStart = false;
+                });
+                ReleepWatchConnect.stopSport(typeSport: SportType.RUN);
+              }
             },
             child: Icon(isStart ? Icons.stop : Icons.play_arrow, size: 60),
           ),
@@ -506,9 +528,9 @@ class _FitnessPageState extends State<FitnessPage> {
 
   void _cancelWatchSport() {
     _ReleepWatchSportubscription.cancel();
+    _ReleepWatchTodeviceSportubscription.cancel();
   }
 }
-
 
 class SportType {
   static const int RESERVED = 0;

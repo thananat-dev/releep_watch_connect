@@ -74,7 +74,8 @@ public class ReleepWatchConnectPlugin
 
     YCBTClient.initClient(flutterPluginBinding.getApplicationContext(), true);
     YCBTClient.registerBleStateChange(bleConnectResponse);
-    YCBTClient.deviceToApp(toAppDataResponse);
+
+
 
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "releep_watch_connect");
     channel.setMethodCallHandler(this);
@@ -256,26 +257,8 @@ public class ReleepWatchConnectPlugin
         }
       });
     }else if (call.method.equals("startSport")) {
-
-//      isStop = false;
+      isStop = false;
       int typeSport = call.argument("typeSport");
-//      YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
-//        @Override
-//        public void onRealDataResponse(int dataType, HashMap dataMap) {
-//          if(Boolean.TRUE.equals(isStop)){
-//            if (dataMap != null ) {
-//              isStop = false;
-//              HashMap startSport = dataMap;
-//              new Handler(Looper.getMainLooper()).post(() -> { result.success(startSport);
-//              });
-//            } else {
-//              android.util.Log.e("syncFitness", "no ..step..data....");
-//              new Handler(Looper.getMainLooper()).post(() -> { result.success(null); });
-//            }
-//          }
-//          android.util.Log.d("mainactivity","chong-------" + dataMap.toString());
-//        }
-//      });
       YCBTClient.appRunMode(Constants.SportState.Start, typeSport, new BleDataResponse() {
         @Override
         public void onDataResponse(int code, float ratio, HashMap resultMap) {
@@ -761,15 +744,46 @@ public class ReleepWatchConnectPlugin
       }, 6);
     }
 
+
     if(arguments.equals("sportStart")){
+
+      final HashMap[] startSport = new HashMap[1];
       YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
         @Override
         public void onRealDataResponse(int dataType, HashMap dataMap) {
-          HashMap startSport = dataMap;
-          new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport); });
+           startSport[0] = dataMap;
+          startSport[0].put("isStop",1);
+          new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport[0]); });
+        }
+      });
+      YCBTClient.deviceToApp(new BleDeviceToAppDataResponse() {
+
+        @Override
+        public void onDataResponse(int dataType, HashMap dataMap) {
+
+          int type = (int) dataMap.get("dataType");
+          if(type == Constants.DATATYPE.DeviceSportModeControl){
+            if (((byte[]) dataMap.get("datas")).length >= 2 && ((byte[]) dataMap.get("datas"))[0] == 0) {
+              isStop = true;
+              startSport[0].put("isStop",0);
+              new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport[0]); });
+            } else {
+            }
+          }
+          android.util.Log.e("TimeSetActivity", "被动回传数据。。。");
+          android.util.Log.e("TimeSetActivity", dataMap.toString());
+
         }
       });
     }
+
+
+    if(arguments.equals("deviceToApp")){
+
+    }
+
+
+
 //    if(arguments.equals("sync")){
 //      List<Object> lists = new ArrayList<>();
 //      YCBTClient.healthHistoryData(Constants.DATATYPE.Health_HistoryHeart, new BleDataResponse() {
@@ -797,6 +811,9 @@ public class ReleepWatchConnectPlugin
   public void onCancel(Object arguments) {
 
   }
+
+
+
 
 
 
@@ -843,16 +860,7 @@ public class ReleepWatchConnectPlugin
     }
   };
 
-  BleDeviceToAppDataResponse toAppDataResponse = new BleDeviceToAppDataResponse() {
 
-    @Override
-    public void onDataResponse(int dataType, HashMap dataMap) {
-
-      android.util.Log.e("TimeSetActivity", "被动回传数据。。。");
-      android.util.Log.e("TimeSetActivity", dataMap.toString());
-
-    }
-  };
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
