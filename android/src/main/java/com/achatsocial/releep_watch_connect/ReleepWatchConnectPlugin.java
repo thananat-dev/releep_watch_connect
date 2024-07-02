@@ -751,9 +751,16 @@ public class ReleepWatchConnectPlugin
       YCBTClient.appRegisterRealDataCallBack(new BleRealDataResponse() {
         @Override
         public void onRealDataResponse(int dataType, HashMap dataMap) {
-           startSport[0] = dataMap;
-          startSport[0].put("isStop",1);
-          new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport[0]); });
+
+          if (dataType == Constants.DATATYPE.Real_UploadSport) {
+            int  sportStep = (int) dataMap.get("sportStep");
+            int  sportDistance = (int) dataMap.get("sportDistance");
+            int  sportCalorie = (int) dataMap.get("sportCalorie");
+          }else{
+            startSport[0] = dataMap;
+            startSport[0].put("isStop",1);
+            new Handler(Looper.getMainLooper()).post(() -> { events.success(startSport[0]); });
+          }
         }
       });
       YCBTClient.deviceToApp(new BleDeviceToAppDataResponse() {

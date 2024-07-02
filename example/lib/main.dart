@@ -387,6 +387,10 @@ class _MyAppState extends State<MyApp> {
                             ReleepWatchConnect.startForegroundTask(),
                         child: const Text("startTask")),
                     ElevatedButton(
+                        onPressed: () =>
+                            ReleepWatchConnect.stopForegroundTask(),
+                        child: const Text("stopTask")),
+                    ElevatedButton(
                         onPressed: () => ReleepWatchConnect.syncFitness(),
                         child: const Text("syncFitness")),
                     ElevatedButton(

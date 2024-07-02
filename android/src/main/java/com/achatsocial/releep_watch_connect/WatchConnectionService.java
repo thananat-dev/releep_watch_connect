@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.RequiresApi;
+
 import com.yucheng.ycbtsdk.YCBTClient;
 import com.yucheng.ycbtsdk.response.BleDataResponse;
 
@@ -93,15 +95,27 @@ public class WatchConnectionService extends Service {
 //        }
 //    };
 
+
+    long maxDuration = 60000;
+    Long startTime = null;
+    long currentTime = System.currentTimeMillis();
     private Runnable mUpdateNotificationRunnable = new Runnable() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        public void run() {
-            int bleState = YCBTClient.connectState();
+        public void run() {int bleState = YCBTClient.connectState();
             status = UtilReleepWatch.getStatusName(bleState);
             if(bleState != UtilReleepWatch.CONNECTED && bleState != UtilReleepWatch.CONNECTING && bleState != UtilReleepWatch.READ_WRITE_OK){
                if(!watchMac.equals("")) {
-                   int code = UtilReleepWatch.connectWatchBleWithMac(watchMac);
+                   long currentTime = System.currentTimeMillis();
+                   if (startTime == null) {
+                       startTime = currentTime;
+                   }
+                   if (currentTime - startTime <= maxDuration) {
+                       int code = UtilReleepWatch.connectWatchBleWithMac(watchMac);
+                   }
                }
+            }else{
+                startTime = null;
             }
 
             mCount++;
@@ -118,6 +132,7 @@ public class WatchConnectionService extends Service {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private Notification buildNotification() {
         return new Notification.Builder(WatchConnectionService.this, CHANNEL_ID)
                 .setContentTitle("Watch : "+ watchMac)

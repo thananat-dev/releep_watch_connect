@@ -61,3 +61,7 @@
 ## 0.0.8
 
 * fix sport action from watch.
+
+## 0.0.9
+
+* fix handle foreground fail.
