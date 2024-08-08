@@ -54,7 +54,7 @@ int  ecg_data_proc_init(ECG_BPM_SAMPLE_FREQ_ENUM ecgFs);
 @desc: sampled ecg data send to this function,then user can process the data with the ret value;
 @
 */
-float ecg_data_proc(int ecgdata);
+float ecg_data_proc(int ecgdata, int model);
 
 char* getVersion();
 

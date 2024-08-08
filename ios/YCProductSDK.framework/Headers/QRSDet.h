@@ -55,7 +55,8 @@ extern void getHR(short *hrval);
 extern void getRR(short *rrval);
 extern void getHRV(short *hrvval);
 extern void getAF(bool *afflag);
-
+extern void get5Param(float *heavy_load, float *pressure, float *HRV_norm, float *body, float *sympathetic_parasympathetic,
+                      unsigned char *respiratory_rate);
 extern void getECGFinalResult(short *hr, int *qrstype, bool *afflag);
 
 void resetARR();

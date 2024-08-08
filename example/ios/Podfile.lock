@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - releep_watch_connect (0.0.1):
+  - releep_watch_connect (0.0.9):
     - Flutter
     - SwiftyJSON
   - SwiftyJSON (5.0.1)
@@ -21,9 +21,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  releep_watch_connect: 08bc894053aaa000ed8c0da99d8082f17f6e1f74
+  releep_watch_connect: 25ad5ce9f16630e7bb027200f5fdd72af3791e0d
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: 53026eaf67b63baa2e316e457f9701dbdf33f41a
+PODFILE CHECKSUM: 0fdd1e0279c6250b483606c4b727a95814a6beed
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

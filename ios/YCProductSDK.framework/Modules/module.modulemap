@@ -1,7 +1,7 @@
 framework module YCProductSDK {
   umbrella header "YCProductSDK.h"
-
   export *
+
   module * { export * }
 }
 
