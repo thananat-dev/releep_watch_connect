@@ -28,7 +28,9 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         registrar.addMethodCallDelegate(instance, channel: channel)
         
         let eventChannel = FlutterEventChannel(name: "scan_releep_watch", binaryMessenger: registrar.messenger())
+        
         eventChannel.setStreamHandler(SwiftStreamHandler())
+        
         
         // Register MyAppBackgroundTask as the app delegate
         if let appDelegateClass = NSClassFromString("MyAppBackgroundTask") as? NSObject.Type {
@@ -537,6 +539,29 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         } else if(call.method == "removeMacAddress") {
             UserDefaults.standard.set("", forKey: "KEY_BLE_WATCH")
             result(true)
+        } else if(call.method == "startSport") {
+            let args = call.arguments as? Dictionary<String, Any>
+            let typeSport = args?["typeSport"] as? Int
+            let sportType = YCDeviceSportType(rawValue: UInt8(typeSport!))
+            YCProduct.controlSport(state: .start, sportType: sportType!){state,response in
+                if state == .succeed {
+                        print("success")
+                } else {
+                    
+                }
+            }
+            print(typeSport!)
+        }else if(call.method == "stopSport"){
+            let args = call.arguments as? Dictionary<String, Any>
+            let typeSport = args?["typeSport"] as? Int
+            let sportType = YCDeviceSportType(rawValue: UInt8(typeSport!))
+            YCProduct.controlSport(state: .stop, sportType: sportType!) { state, response in
+                if state == .succeed {
+                    print("success")
+                } else {
+                    print("fail")
+                }
+            }
         }
     }
     
@@ -631,8 +656,14 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
     }
 }
 
+
+// StreamCalBack
+
 class SwiftStreamHandler: NSObject, FlutterStreamHandler {
+    private var eventSink: FlutterEventSink?
+    
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        
         if arguments as! String == "scan"{
             
             YCProduct.scanningDevice { devices, error in
@@ -640,6 +671,7 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
                 devicesList = devices
                 for device in devices {
                     print(device.name ?? "", device.macAddress, device.identifier.uuidString)
+                    
                     let BLEObject : ScanBLEResponse = ScanBLEResponse(deviceName: device.name ?? "", macAddress:device.macAddress,uuidString: device.identifier.uuidString)
                     scanBLEResponse.append(BLEObject)
                     
@@ -655,6 +687,27 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
                 //                events(jsonData)
             }
             
+            
+        }
+        
+        if arguments as! String == "sportStart"{
+            self.eventSink = events
+            print("sportStart")
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(receiveRealTimeData(_:)),
+                name: YCProduct.receivedRealTimeNotification,
+                object: nil
+            )
+            
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(deviceDataStateChanged(_:)),
+                name: YCProduct.deviceControlNotification,
+                object: nil
+            )
+            
+            
         }
         
         //        events(FlutterError(code: "ERROR_CODE",
@@ -663,6 +716,103 @@ class SwiftStreamHandler: NSObject, FlutterStreamHandler {
         //        events(FlutterEndOfEventStream) // when stream is over
         return nil
     }
+    
+    
+    
+    var monitoringInfo : YCReceivedMonitoringModeInfo2?
+    @objc private func receiveRealTimeData(_ notification: Notification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        if let response =
+            info[YCReceivedRealTimeDataType.realTimeMonitoringMode.string] as?
+            YCReceivedDeviceReportInfo,
+           let device = response.device,
+           let data = response.data as? YCReceivedMonitoringModeInfo {
+            print(device.name ?? "",
+                  data.startTimeStamp,
+                  data.modeStep,
+                  data.modeCalories,
+                  data.modeCalories
+            )
+            monitoringInfo = YCReceivedMonitoringModeInfo2(
+                startTimeStamp: data.startTimeStamp,
+                heartRate: data.heartRate,
+                systolicBloodPressure: data.systolicBloodPressure,
+                diastolicBloodPressure: data.diastolicBloodPressure,
+                bloodOxygen: data.bloodOxygen,
+                respirationRate: data.respirationRate,
+                temperature: data.temperature,
+                realStep: data.realStep,
+                realDistance: data.realDistance,
+                realCalories: data.realCalories,
+                modeStep: data.modeStep,
+                modeDistance: data.modeDistance,
+                modeCalories: data.modeCalories,
+                ppi: data.ppi,
+                vo2max: data.vo2max,
+                isStop: 1
+            )
+            
+            
+            do {
+                let jsonData = try JSONEncoder().encode(monitoringInfo)
+                let jsonString = String(data: jsonData, encoding: .utf8)!
+                //                events(jsonString)
+                self.eventSink?(jsonString)
+            } catch {
+                print(error)
+            }
+        }
+        
+    }
+    
+    
+    @objc private func deviceDataStateChanged(_ ntf: Notification) {
+        guard let info = ntf.userInfo else {
+            return
+        }
+        if let response = info[YCDeviceControlType.sportModeControl.string] as?
+            YCReceivedDeviceReportInfo,
+           let device = response.device,
+           let data = response.data as? YCDeviceControlSportModeControlInfo {
+            //            print(device.name ?? "",
+            //                  data.state,
+            //                  data.sportType
+            //            )
+            if data.state  == YCDeviceSportState.stop  {
+                let data = YCReceivedMonitoringModeInfo2(
+                    startTimeStamp: monitoringInfo!.startTimeStamp,
+                    heartRate: monitoringInfo!.heartRate,
+                    systolicBloodPressure: monitoringInfo!.systolicBloodPressure,
+                    diastolicBloodPressure: monitoringInfo!.diastolicBloodPressure,
+                    bloodOxygen: monitoringInfo!.bloodOxygen,
+                    respirationRate: monitoringInfo!.respirationRate,
+                    temperature: monitoringInfo!.temperature,
+                    realStep: monitoringInfo!.realStep,
+                    realDistance: monitoringInfo!.realDistance,
+                    realCalories: monitoringInfo!.realCalories,
+                    modeStep: monitoringInfo!.modeStep,
+                    modeDistance: monitoringInfo!.modeDistance,
+                    modeCalories: monitoringInfo!.modeCalories,
+                    ppi: monitoringInfo!.ppi,
+                    vo2max: monitoringInfo!.vo2max,
+                    isStop: 0
+                )
+                do {
+                    let jsonData = try JSONEncoder().encode(data)
+                    let jsonString = String(data: jsonData, encoding: .utf8)!
+                    //                events(jsonString)
+                    self.eventSink?(jsonString)
+                } catch {
+                    print(error)
+                }
+                
+            }
+            
+        }
+    }
+
     
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         return nil

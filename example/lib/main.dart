@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -467,20 +468,19 @@ class _FitnessPageState extends State<FitnessPage> {
     // TODO: implement initState
     super.initState();
 
-    callBackDevice();
+    // callBackDevice();
   }
 
-
-  callBackDevice(){
-    // _ReleepWatchTodeviceSportubscription =
-    //     ReleepWatchConnect.deviceToAppSport.listen((event) {
-    //       if(event == 0){
-    //         // _cancelWatchSport();
-    //         setState(() {
-    //          text = "";
-    //         });
-    //       }
-    //     });
+  callBackDevice() {
+    _ReleepWatchTodeviceSportubscription =
+        ReleepWatchConnect.deviceToAppSport.listen((event) {
+          if(event == 0){
+            // _cancelWatchSport();
+            setState(() {
+             text = "";
+            });
+          }
+        });
   }
 
   @override
@@ -501,8 +501,9 @@ class _FitnessPageState extends State<FitnessPage> {
                   isStart = true;
                   text = "";
                 });
-                var res = await ReleepWatchConnect.startSport(
-                    typeSport: SportType.RUN);
+                var res =  ReleepWatchConnect.startSport(
+                    typeSport:
+                        Platform.isIOS ? YCDeviceSportType.run : SportType.RUN);
                 _ReleepWatchSportubscription =
                     ReleepWatchConnect.sportStartResponse.listen((event) => {
                           setState(() {
@@ -522,7 +523,9 @@ class _FitnessPageState extends State<FitnessPage> {
                 setState(() {
                   isStart = false;
                 });
-                ReleepWatchConnect.stopSport(typeSport: SportType.RUN);
+                ReleepWatchConnect.stopSport(
+                    typeSport:
+                        Platform.isIOS ? YCDeviceSportType.run : SportType.RUN);
               }
             },
             child: Icon(isStart ? Icons.stop : Icons.play_arrow, size: 60),
@@ -532,7 +535,7 @@ class _FitnessPageState extends State<FitnessPage> {
 
   void _cancelWatchSport() {
     _ReleepWatchSportubscription.cancel();
-    _ReleepWatchTodeviceSportubscription.cancel();
+    // _ReleepWatchTodeviceSportubscription.cancel();
   }
 }
 
@@ -575,4 +578,44 @@ class SportType {
   static const int ROCK_CLIMBING = 35;
   static const int AEROBICS = 36;
   static const int OTHERSPORTS = 37;
+}
+
+class YCDeviceSportType {
+  static const int none = 0x00;
+  static const int run = 0x01;
+  static const int swimming = 0x02;
+  static const int riding = 0x03;
+  static const int fitness = 0x04;
+  static const int ropeskipping = 0x06;
+  static const int playball = 0x07;
+  static const int walk = 0x08;
+  static const int badminton = 0x09;
+  static const int football = 0x0A;
+  static const int mountaineering = 0x0B;
+  static const int pingPang = 0x0C;
+  static const int freeMode = 0x0D;
+  static const int indoorRunning = 0x0E;
+  static const int outdoorRunning = 0x0F;
+  static const int outdoorWalking = 0x10;
+  static const int indoorWalking = 0x11;
+  static const int runMode = 0x12;
+  static const int indoorRiding = 0x13;
+  static const int stepper = 0x14;
+  static const int rowingMachine = 0x15;
+  static const int realTimeMonitoring = 0x16;
+  static const int situps = 0x17;
+  static const int jumping = 0x18;
+  static const int weightTraining = 0x19;
+  static const int yoga = 0x1A;
+  static const int onfoot = 0x1B;
+  static const int volleyball = 0x1C;
+  static const int kayak = 0x1D;
+  static const int rollerSkating = 0x1E;
+  static const int tennis = 0x1F;
+  static const int golf = 0x20;
+  static const int ellipticalMachine = 0x21;
+  static const int dance = 0x22;
+  static const int rockClimbing = 0x23;
+  static const int aerobics = 0x24;
+  static const int otherSports = 0x25;
 }

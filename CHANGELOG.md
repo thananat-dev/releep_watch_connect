@@ -65,3 +65,7 @@
 ## 0.0.9
 
 * fix handle foreground fail.
+
+## 0.1.0
+
+* add sport for ios.
