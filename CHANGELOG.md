@@ -69,3 +69,7 @@
 ## 0.1.0
 
 * add sport for ios.
+
+## 0.1.1
+
+* add sleep for ios minute to second.

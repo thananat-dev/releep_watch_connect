@@ -334,8 +334,8 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
                                 "lightSleepCount":info.lightSleepCount,
                                 "sleepData":sleepDataList,
                                 "startTime": info.startTimeStamp,
-                                "lightSleepTotal": info.lightSleepMinutes,
-                                "deepSleepTotal": info.deepSleepMinutes,
+                                "lightSleepTotal": info.lightSleepMinutes * 60,
+                                "deepSleepTotal": info.deepSleepMinutes * 60,
                                 "endTime": info.endTimeStamp
                             ]
                         )
@@ -405,7 +405,7 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         else if call.method == "settingHeartMonitor" {
             let args = call.arguments as! Dictionary<String, Any>
             let time = args["intervalTime"] as! UInt8
-            YCProduct.setDeviceHeartRateMonitoringMode(isEnable: true, interval: time) { state, response in
+            YCProduct.setDeviceHealthMonitoringMode(isEnable: true, interval: time) { state, response in
                 if state == .succeed {
                     print("success")
                     result(0)
