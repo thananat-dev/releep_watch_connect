@@ -2,7 +2,7 @@
 
 A new flutter plugin to connect releep watch.
 
-[![pub package](https://img.shields.io/badge/pub-v0.0.9-blue)](https://pub.dev/packages/releep_watch_connect)
+[![pub package](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/releep_watch_connect)
 
 ## Getting Started
 
