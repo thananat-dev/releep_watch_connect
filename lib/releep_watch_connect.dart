@@ -90,8 +90,6 @@ class ReleepWatchConnect {
     return dataECG;
   }
 
-
-
   //New Sport
   static Future<dynamic> syncRunIndoors() async {
     var dataRunIndoors = await _channel.invokeMethod('syncRunIndoors');
@@ -114,15 +112,18 @@ class ReleepWatchConnect {
   }
 
   static Future<dynamic> startSport({required int typeSport}) async {
-    var startSport = await _channel.invokeMethod('startSport',  {'typeSport': typeSport,});
+    var startSport = await _channel.invokeMethod('startSport', {
+      'typeSport': typeSport,
+    });
     return startSport;
   }
 
   static Future<dynamic> stopSport({required int typeSport}) async {
-    var stopSport = await _channel.invokeMethod('stopSport',{'typeSport': typeSport,});
+    var stopSport = await _channel.invokeMethod('stopSport', {
+      'typeSport': typeSport,
+    });
     return stopSport;
   }
-
 
   static Future<dynamic> getCurrentSystemMode() async {
     //0x00: Normal working mode 0x01: Caring working mode 0x02: Power saving working mode 0x03: Custom working mode
@@ -178,10 +179,10 @@ class ReleepWatchConnect {
     return res_mode;
   }
 
-  static Future<dynamic> settingTemperatureAlarm(value) async {
+  static Future<dynamic> settingTemperatureAlarm(value, minValue) async {
     // Temperature alarm upper limit (0-127)
-    var res_mode = await _channel
-        .invokeMethod('settingTemperatureAlarm', {'value': value});
+    var res_mode = await _channel.invokeMethod(
+        'settingTemperatureAlarm', {'value': value, 'minValue': minValue});
     return res_mode;
   }
 
@@ -211,11 +212,11 @@ class ReleepWatchConnect {
 
   static Stream get scanReleepWatch => stream.receiveBroadcastStream("scan");
 
-  static Stream get deviceToAppSport => stream.receiveBroadcastStream("deviceToApp");
+  static Stream get deviceToAppSport =>
+      stream.receiveBroadcastStream("deviceToApp");
 
-  static Stream get sportStartResponse => stream.receiveBroadcastStream("sportStart");
-
-
+  static Stream get sportStartResponse =>
+      stream.receiveBroadcastStream("sportStart");
 
   //static Stream get syncReleepWatch => stream.receiveBroadcastStream("sync");
 

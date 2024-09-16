@@ -206,8 +206,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<Null> _settingTemperatureAlarm(value) async {
-    int code = await ReleepWatchConnect.settingTemperatureAlarm(value);
+  Future<Null> _settingTemperatureAlarm(value,minValue) async {
+    int code = await ReleepWatchConnect.settingTemperatureAlarm(value,minValue);
     debugPrint("settingTemperatureAlarm Res ${code}");
     setState(() {
       _resReleepWatch.text = "settingTemperatureAlarm :" + code.toString();
@@ -349,7 +349,7 @@ class _MyAppState extends State<MyApp> {
                         onPressed: () => _settingLangReleepWatch(0x0D),
                         child: const Text("Setting Lang TH")),
                     ElevatedButton(
-                        onPressed: () => _settingTemperatureAlarm(38),
+                        onPressed: () => _settingTemperatureAlarm(38,20),
                         child: const Text("Setting Temp 38")),
                     ElevatedButton(
                         onPressed: () => _settingBloodOxygenAlarm(95),

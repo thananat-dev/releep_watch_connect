@@ -73,3 +73,7 @@
 ## 0.1.1
 
 * add sleep for ios minute to second.
+
+## 0.1.2
+
+* add min temp alarm.

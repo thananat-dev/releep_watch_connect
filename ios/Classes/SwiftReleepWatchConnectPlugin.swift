@@ -457,11 +457,12 @@ public class SwiftReleepWatchConnectPlugin: NSObject, FlutterPlugin {
         else if call.method == "settingTemperatureAlarm" {
             let args = call.arguments as! Dictionary<String, Any>
             let value = args["value"] as! UInt8
+            let minValue = args["minValue"] as! UInt8
             YCProduct.setDeviceTemperatureAlarm(isEnable: true,
                                                 highTemperatureIntegerValue: value,
                                                 highTemperatureDecimalValue: 0,
-                                                lowTemperatureIntegerValue: 35,
-                                                lowTemperatureDecimalValue: 5) { state, response in
+                                                lowTemperatureIntegerValue: minValue,
+                                                lowTemperatureDecimalValue: 0) { state, response in
                 if state == .succeed {
                     print("success")
                     result(0)
