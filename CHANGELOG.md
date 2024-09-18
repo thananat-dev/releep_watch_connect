@@ -77,3 +77,7 @@
 ## 0.1.2
 
 * add min temp alarm.
+
+## 0.1.3
+
+* remove svg lib.
