@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/releep_watch_connect/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   releep_watch_connect: 25ad5ce9f16630e7bb027200f5fdd72af3791e0d
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 

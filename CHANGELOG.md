@@ -81,3 +81,7 @@
 ## 0.1.3
 
 * remove svg lib.
+
+## 0.1.4
+
+* update compile sdk to 34.
