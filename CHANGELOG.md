@@ -85,3 +85,7 @@
 ## 0.1.4
 
 * update compile sdk to 34.
+
+## 0.1.5
+
+* update compile sdk to 35.

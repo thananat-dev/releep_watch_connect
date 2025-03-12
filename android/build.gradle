@@ -35,8 +35,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
-
+    compileSdkVersion 35
+    namespace 'com.achatsocial.releep_watch_connect'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -65,64 +65,71 @@ android {
 
 
 
-
 dependencies {
-//    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    // Local JAR files
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // External Libraries
+    // Correct way to add the dependency with exclusions
     implementation('org.simpleframework:simple-xml:2.7.1') {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'xpp3', module: 'xpp3'
     }
 
-    implementation (name: 'JL_Watch_V1.10.0-release', ext: 'aar')
-    implementation (name: 'ycbtsdk-release', ext: 'aar')
-    implementation (name: 'AliAgent-release-4.2.1', ext: 'aar')
-    implementation (name: 'jl_rcsp_V0.5.2-release', ext: 'aar')
-    implementation (name: 'jl_rcsp_V0.5.2-release', ext: 'aar')
+    // Local AAR files
+    implementation(name: 'JL_Watch_V1.10.0-release', ext: 'aar')
+    implementation(name: 'ycbtsdk-release', ext: 'aar')
+    implementation(name: 'AliAgent-release-4.2.1', ext: 'aar')
+    implementation(name: 'jl_rcsp_V0.5.2-release', ext: 'aar')
 
+    // AndroidX Libraries
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'org.greenrobot:eventbus:3.3.1'
 
-//    implementation fileTree(include: ['*.aar'], dir: 'libs')
-    implementation "com.squareup.okhttp3:okhttp:4.4.0"
-    implementation 'com.google.code.gson:gson:2.8.6'
+    // OkHttp and Retrofit Libraries (without BOM)
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'  // OkHttp version
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'  // Logging interceptor
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'  // Retrofit version
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'  // Gson converter
 
-    //网络库
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation("com.squareup.okhttp3:okhttp-bom:4.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    // Smart Refresh Layout (No Proguard needed for androidx version)
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    implementation 'com.scwang.smart:refresh-header-classics:2.0.1'
+    implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'
 
-    // 下拉刷新SmartRefreshLayout 不需要混淆  androidx版本
-    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
-    implementation 'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
-    implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
-
+    // RecyclerView
     implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
-    // FlycoDialog 对话框
+
+    // Dialog Library (Flyco)
     implementation 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
 
+    // DFU (Device Firmware Update)
     implementation 'no.nordicsemi.android:dfu:1.10.1'
 
-    //图片加载库
+    // Image Loading Library (Glide)
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //Room持久性库
-    implementation "androidx.room:room-runtime:2.3.0"
-    annotationProcessor "androidx.room:room-compiler:2.3.0"
+    // Room Persistence Library
+    implementation 'androidx.room:room-runtime:2.3.0'
+    annotationProcessor 'androidx.room:room-compiler:2.3.0'
 
-//    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    // MQTT Client
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    //implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
+    // JSON Parsing Library (FastJSON)
     implementation 'com.alibaba:fastjson:1.2.83'
+
+    // Commons Text
     implementation 'org.apache.commons:commons-text:1.9'
 
+    // Testing Libraries
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
 
 
 
